@@ -5,9 +5,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiIcono {
     private  val retrofit2 = Retrofit.Builder()
-        .baseUrl("https://api.thenounproject.com/")
+        .baseUrl("https://svgapi.com/")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-
+    val api = retrofit2.create(InterfazIconos::class.java)
 }
