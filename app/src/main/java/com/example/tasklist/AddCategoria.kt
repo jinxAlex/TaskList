@@ -1,6 +1,7 @@
 package com.example.tasklist
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -19,14 +20,13 @@ class AddCategoria : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddCategoriaBinding
 
-    private lateinit var listaIconos : MutableList<Icono>
+    private var listaIconos = mutableListOf<Icono>()
 
     private val adapter = IconosAdapter(listaIconos)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
         binding = ActivityAddCategoriaBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
@@ -35,6 +35,7 @@ class AddCategoria : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
         setRecycler()
         pintarIconos()
     }
@@ -47,12 +48,24 @@ class AddCategoria : AppCompatActivity() {
     }
 
     private fun pintarIconos() {
-        lifecycleScope.launch(Dispatchers.IO){
-            val iconos = ApiIcono.api.getIconos("clock")
-            val lista = iconos.body()?.listaIconos ?: emptyList<Icono>().toMutableList()
-            withContext(Dispatchers.Main){
-                adapter.lista = lista
-                adapter.notifyDataSetChanged()
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                val iconos = ApiIcono.api.getIconos("arrow", 10, "HANlqhzPE5tOF85NLRV57IimCvFnmvPoPb17Afk23gEumiZJ29i6S3YrAwRT5ocp")
+
+                val lista = iconos.body()?.listaIconos ?: mutableListOf()
+
+                withContext(Dispatchers.Main) {
+                    if (lista.isNotEmpty()) {
+                        adapter.lista = lista
+                        adapter.notifyDataSetChanged()
+                    } else {
+                        Toast.makeText(this@AddCategoria, "No se encontraron iconos", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@AddCategoria, "Error al cargar iconos: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }

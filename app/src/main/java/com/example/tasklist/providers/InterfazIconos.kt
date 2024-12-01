@@ -6,8 +6,8 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface InterfazIconos {
-    @GET("v1/")
+    @GET("v4/icons/")
 
-    suspend fun getIconos(@Query("search?term=") busqueda: String): Response<ListaIconos>
+    suspend fun getIconos( @Query("query") busqueda: String, @Query("count") count: Int = 10, @Query("Authorization") apiKey: String): Response<ListaIconos>
 
 }

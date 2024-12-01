@@ -11,7 +11,7 @@ import com.example.tasklist.R
 
 
 class FragmentCategorias(
-    private val arrayCategorias: ArrayList<String>
+    //private val arrayCategorias: ArrayList<String>
 ) : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,7 +28,7 @@ class FragmentCategorias(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        val contexto = requireContext()
+/*        val contexto = requireContext()
 
         val layoutManager = view.findViewById<LinearLayout>(R.id.linearLayout)
 
@@ -37,7 +37,7 @@ class FragmentCategorias(
             val btn = Button(contexto)
             btn.setText(categoria)
             layoutManager.addView(btn)
-        }
+        }*/
     }
 
 }
