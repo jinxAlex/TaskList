@@ -6,19 +6,19 @@
     android:layout_height="wrap_content"
     app:cardCornerRadius="8dp"
     app:cardElevation="8dp"
-    app:cardUseCompatPadding="true"
-    android:padding="8dp">
+    app:cardUseCompatPadding="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#B2DFDB"
         android:padding="8dp">
 
-        <RadioButton
-            android:id="@+id/rb"
+        <CheckBox
+            android:id="@+id/cb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="RadioButton"
+            android:text="nombre"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"

@@ -20,6 +20,18 @@ class Crud {
         }
     }
 
+    fun update(tarea: Tarea):Boolean{
+        val con = Aplicacion.llave.writableDatabase
+        val tareaValues = tarea.toContentValues()
+        var filasAfectadas = 0
+        val q = "select id from ${Aplicacion.TABLA} where id <> ? AND nombre = ?"
+        val cursor = con.rawQuery(q, arrayOf(tarea.id.toString(),tarea.nombre))
+        if(!cursor.moveToFirst()){
+            filasAfectadas = con.update(Aplicacion.TABLA, tareaValues, "id=?", arrayOf(tarea.id.toString()))
+        }
+        return filasAfectadas > 0
+    }
+
     fun readTareas(finalizado: Boolean): MutableList<Tarea>{
         val lista = mutableListOf<Tarea>()
         val con = Aplicacion.llave.readableDatabase
@@ -31,7 +43,7 @@ class Crud {
                 if(finalizado) arrayOf("1") else arrayOf("0"),
                 null,
                 null,
-                null
+                "prioridad DESC"
             )
             while (cursor.moveToNext()){
                 val tarea = Tarea(

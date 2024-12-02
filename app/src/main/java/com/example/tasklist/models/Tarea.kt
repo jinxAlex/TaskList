@@ -5,7 +5,7 @@ data class Tarea(
     val nombre: String,
     val descripcion: String,
     val tiempo: Int,
-    val finalizado: Boolean,
+    var finalizado: Boolean,
     val categoria: String,
     val localizacion: String,
     val pagina: String,

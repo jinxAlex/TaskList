@@ -50,7 +50,7 @@ class AddCategoria : AppCompatActivity() {
     private fun pintarIconos() {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                val iconos = ApiIcono.api.getIconos("arrow", 10, "HANlqhzPE5tOF85NLRV57IimCvFnmvPoPb17Afk23gEumiZJ29i6S3YrAwRT5ocp")
+                val iconos = ApiIcono.api.getIconos("HANlqhzPE5tOF85NLRV57IimCvFnmvPoPb17Afk23gEumiZJ29i6S3YrAwRT5ocp","arrow", 10 )
 
                 val lista = iconos.body()?.listaIconos ?: mutableListOf()
 

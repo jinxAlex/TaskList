@@ -2,6 +2,7 @@ package com.example.tasklist
 
 import android.os.Bundle
 import android.view.View
+import android.widget.SeekBar
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -13,7 +14,7 @@ import com.example.tasklist.fragment.FragmentPagina
 import com.example.tasklist.models.Tarea
 import com.example.tasklist.providers.db.Crud
 
-class AddTarea : AppCompatActivity() {
+class AddTarea : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
 
     private var editable: Boolean = false
 
@@ -34,6 +35,7 @@ class AddTarea : AppCompatActivity() {
             insets
         }
         setListeners()
+        ponerMinutos()
     }
 
 
@@ -53,8 +55,8 @@ class AddTarea : AppCompatActivity() {
             if(comprobarDatos()){
                 enviarDatos()
             }
-
         }
+        binding.sbTiempo.setOnSeekBarChangeListener(this)
     }
 
     private fun enviarDatos() {
@@ -75,11 +77,29 @@ class AddTarea : AppCompatActivity() {
         }
     }
 
+    private fun ponerMinutos() {
+        binding.tvTiempo.setText(String.format(getString(R.string.add_tarea_tv_tiempo),binding.sbTiempo.progress))
+    }
+
+
     private fun ponerMapa() {
 
     }
 
     private fun ponerPagina() {
+
+    }
+
+    override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+        ponerMinutos()
+    }
+
+
+    override fun onStartTrackingTouch(seekBar: SeekBar?) {
+
+    }
+
+    override fun onStopTrackingTouch(seekBar: SeekBar?) {
 
     }
 }

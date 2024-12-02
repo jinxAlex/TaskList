@@ -35,11 +35,12 @@
         android:id="@+id/cardView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="20dp"
         app:cardCornerRadius="8dp"
         app:cardElevation="8dp"
         app:cardUseCompatPadding="true"
-        app:layout_constraintBottom_toTopOf="@+id/btn_add"
+        app:layout_constraintBottom_toTopOf="@+id/separator"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/tv_tareas_por_hacer"
@@ -57,6 +58,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
         android:text="@string/main_tv_tareas_hechas"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -64,8 +66,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_add"
+        app:layout_constraintTop_toBottomOf="@+id/separator"
         app:layout_constraintVertical_bias="0.0" />
+
+    <View
+        android:id="@+id/separator"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.55" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView2"
@@ -92,12 +108,10 @@
         android:id="@+id/btn_add"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/cardView"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.55"
+        android:layout_marginStart="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_tareas_por_hacer"
+        app:layout_constraintStart_toEndOf="@+id/tv_tareas_por_hacer"
+        app:layout_constraintTop_toTopOf="@+id/tv_tareas_por_hacer"
         app:srcCompat="@drawable/agregar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

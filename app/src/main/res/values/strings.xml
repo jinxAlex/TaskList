@@ -6,4 +6,8 @@
     <string name="add_tarea_rb_pagina"> Añadir página de interés</string>
     <string name="add_tarea_rb_mapa"> Añadir mapa</string>
     <string name="add_tarea_btn_enviar"> Añadir tarea</string>
+    <string name="add_tarea_tv_tiempo"> Tiempo estimado: %d mins</string>
+    <string name="add_tarea_tv_nombre"> Nombre:</string>
+    <string name="add_tarea_tv_descripcion"> Descripción:</string>
+    <string name="add_tarea_tv_titulo"> Añadir tarea</string>
 </resources>

@@ -16,9 +16,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="TextView"
+        android:text="@string/add_tarea_tv_nombre"
         app:layout_constraintStart_toStartOf="@+id/et_nombre"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_titulo" />
 
     <EditText
         android:id="@+id/et_nombre"
@@ -36,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="TextView"
+        android:text="@string/add_tarea_tv_descripcion"
         app:layout_constraintStart_toStartOf="@+id/et_descripcion"
         app:layout_constraintTop_toBottomOf="@+id/et_nombre" />
 
@@ -46,6 +46,8 @@
         android:layout_height="100dp"
         android:ems="10"
         android:inputType="text"
+        android:selectAllOnFocus="false"
+        android:singleLine="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -72,7 +74,7 @@
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fg_extra"
         android:layout_width="0dp"
-        android:layout_height="500dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -109,14 +111,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_tiempo" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/tv_tiempo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="TextView"
+        android:text="@string/add_tarea_tv_tiempo"
         app:layout_constraintStart_toStartOf="@+id/sb_tiempo"
         app:layout_constraintTop_toBottomOf="@+id/et_descripcion" />
 
@@ -130,6 +132,19 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fg_extra" />
+
+    <TextView
+        android:id="@+id/tv_titulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/add_tarea_tv_titulo"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
   </androidx.constraintlayout.widget.ConstraintLayout>
