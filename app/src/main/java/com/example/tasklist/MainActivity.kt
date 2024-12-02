@@ -13,7 +13,11 @@ import com.example.tasklist.databinding.ActivityMainBinding
 import com.example.tasklist.fragment.FragmentCategorias
 import com.example.tasklist.adapters.TareasAdapter
 import com.example.tasklist.models.Tarea
+import com.example.tasklist.providers.LoginActivity
 import com.example.tasklist.providers.db.Crud
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
 
@@ -44,6 +48,11 @@ class MainActivity : AppCompatActivity() {
         cargarFragment()
         setListeners()
         setRecyclers()
+    }
+
+    private fun irLogin() {
+        val i = Intent(this, LoginActivity::class.java)
+        startActivity(i)
     }
 
     private fun actualizarTablas() {

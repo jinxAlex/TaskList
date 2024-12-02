@@ -10,4 +10,8 @@
     <string name="add_tarea_tv_nombre"> Nombre:</string>
     <string name="add_tarea_tv_descripcion"> Descripción:</string>
     <string name="add_tarea_tv_titulo"> Añadir tarea</string>
+    <string name="login_activity_tv_email">Email: </string>
+    <string name="login_activity_tv_pass">Contraseña: </string>
+    <string name="login_activity_btn_registrar">Registrarme </string>
+    <string name="login_activity_btn_login">Iniciar sesión </string>
 </resources>
