@@ -8,7 +8,7 @@ import com.example.tasklist.models.Tarea
 
 class TareasAdapter(
     var lista: MutableList<Tarea>,
-    private val actualizarEstado: (Int) -> Unit
+    private val actualizarEstado: (Tarea) -> Unit
 ): RecyclerView.Adapter<TareasViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TareasViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.tareas_layout,parent,false)

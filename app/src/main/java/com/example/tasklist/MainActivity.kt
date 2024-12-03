@@ -2,35 +2,27 @@ package com.example.tasklist
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.fragment.app.commit
-import androidx.recyclerview.widget.LinearLayoutManager
+
 import com.example.tasklist.databinding.ActivityMainBinding
-import com.example.tasklist.fragment.FragmentCategorias
-import com.example.tasklist.adapters.TareasAdapter
-import com.example.tasklist.models.Tarea
-import com.example.tasklist.providers.LoginActivity
-import com.example.tasklist.providers.db.Crud
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.auth.auth
 
 class MainActivity : AppCompatActivity() {
 
+
+
     private  lateinit var binding: ActivityMainBinding
 
-    private var listaTareasPorHacer = Crud().readTareas(false)
-
-    private var listaTareasHechas = Crud().readTareas(true)
-
-    private val adapterTareasPorHacer = TareasAdapter(listaTareasPorHacer) { actualizarEstado(it) }
-
-    private val adapterTareasHechas = TareasAdapter(listaTareasHechas) { actualizarEstado(it) }
-
+    private lateinit var auth: FirebaseAuth
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,69 +37,85 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        cargarFragment()
+
+        auth = Firebase.auth
         setListeners()
-        setRecyclers()
-    }
 
-    private fun irLogin() {
-        val i = Intent(this, LoginActivity::class.java)
-        startActivity(i)
-    }
-
-    private fun actualizarTablas() {
-        listaTareasPorHacer = Crud().readTareas(false)
-        listaTareasHechas = Crud().readTareas(true)
-    }
-
-    private fun actualizarEstado(position: Int) {
-        if (position >= 0 && position < listaTareasHechas.size) {
-            val tarea = listaTareasHechas.get(position)
-            Crud().update(tarea)
-            listaTareasHechas.removeAt(position)
-            adapterTareasHechas.notifyItemRemoved(position)
-
-            listaTareasPorHacer.add(tarea)
-            adapterTareasPorHacer.notifyItemInserted(listaTareasPorHacer.size)
-            actualizarTablas()
-        }
-
-        Log.e("MainActivity", "Índice fuera de rango: $position")
-    }
-
-    private fun setRecyclers() {
-        val layout1 = LinearLayoutManager(this)
-        val layout2 = LinearLayoutManager(this)
-        actualizarTablas()
-        binding.recyclerTareasPorHacer.adapter = TareasAdapter(listaTareasPorHacer) {
-            actualizarEstado(it)
-        }
-        binding.recyclerTareasPorHacer.layoutManager = layout1
-
-        binding.recyclerTareasHechas.adapter = TareasAdapter(listaTareasHechas) {
-            actualizarEstado(it)
-        }
-        binding.recyclerTareasHechas.layoutManager = layout2
-    }
-
-    override fun onRestart() {
-        super.onRestart()
-        setRecyclers()
     }
 
     private fun setListeners() {
-        binding.btnAdd.setOnClickListener {
-            val i = Intent(this, AddTarea::class.java)
-            startActivity(i)
+        binding.btnRegistrar.setOnClickListener{
+            registrar()
+        }
+        binding.btnLogin.setOnClickListener{
+            if(datosCorrectos()){
+                login()
+            }
+        }
+        binding.btnGoogle.setOnClickListener {
+            if (datosCorrectos()){
+                loginGoogle()
+            }
         }
     }
 
-    private fun cargarFragment() {
-        val array : ArrayList<String> = arrayListOf("Categoria1")
-        val fg = FragmentCategorias()
-        supportFragmentManager.commit {
-            setReorderingAllowed(true)
-            add(R.id.fg_categoria,fg)
+    private fun loginGoogle() {
+        val googleConf = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.google_cliente_id))
+            .requestEmail()
+            .build()
+        val googleClient = GoogleSignIn.getClient(this,googleConf)
+
+        googleClient.signOut()
+
+        //responseLauncher.launch(googleClient.signInIntent)
+    }
+
+    private fun datosCorrectos(): Boolean{
+        var esCorrecto = true
+        if(!android.util.Patterns.EMAIL_ADDRESS.matcher(binding.etEmail.text).matches()){
+            binding.etPass.error = "ERROR: El email no es valido"
+            esCorrecto = false
         }
+
+        if(binding.etPass.text.length < 9){
+            binding.etPass.error = "ERROR: La contraseña debe tener al menos 9 carácteres"
+            return false
+        }
+
+        return esCorrecto
+    }
+
+    private fun registrar() {
+        auth.createUserWithEmailAndPassword(binding.etEmail.text.toString(),binding.etPass.text.toString())
+            .addOnCompleteListener {
+                if(it.isSuccessful) irTareasActivity()
+            }
+            .addOnFailureListener {
+                Toast.makeText(this,it.message.toString(), Toast.LENGTH_LONG).show()
+            }
+    }
+
+    private fun login() {
+        auth.signInWithEmailAndPassword(binding.etEmail.text.toString(),binding.etPass.text.toString())
+            .addOnCompleteListener {
+                if(it.isSuccessful) irTareasActivity()
+            }
+            .addOnFailureListener {
+                Toast.makeText(this,it.message.toString(), Toast.LENGTH_LONG).show()
+            }
+    }
+
+
+
+    override fun onStart() {
+        super.onStart()
+        val usuario = auth.currentUser
+        if(usuario != null) irTareasActivity()
+    }
+
+    private fun irTareasActivity() {
+        val i = Intent(this,TareasActivity::class.java)
+        startActivity(i)
     }
 }

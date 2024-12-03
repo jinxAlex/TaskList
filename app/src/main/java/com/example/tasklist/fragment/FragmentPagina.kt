@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -67,7 +66,6 @@ class FragmentPagina : Fragment() {
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
                 super.onPageStarted(view, url, favicon)
                 swipe?.isRefreshing = true
-                //view?.loadUrl("https://www.google.com")
             }
 
             override fun onPageFinished(view: WebView?, url: String?) {
@@ -75,7 +73,6 @@ class FragmentPagina : Fragment() {
                 swipe?.isRefreshing = false
             }
         }
+        webView?.loadUrl("https://www.google.es")
     }
-
-
 }

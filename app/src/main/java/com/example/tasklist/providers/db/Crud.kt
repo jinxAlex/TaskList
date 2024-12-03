@@ -29,6 +29,8 @@ class Crud {
         if(!cursor.moveToFirst()){
             filasAfectadas = con.update(Aplicacion.TABLA, tareaValues, "id=?", arrayOf(tarea.id.toString()))
         }
+        cursor.close()
+        con.close()
         return filasAfectadas > 0
     }
 

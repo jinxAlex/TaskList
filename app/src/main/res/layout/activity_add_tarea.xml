@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="800dp">
 
   <androidx.constraintlayout.widget.ConstraintLayout
       android:id="@+id/main"
@@ -25,6 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:ems="10"
+        android:hint="@string/add_tarea_et_nombre"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -45,7 +46,9 @@
         android:layout_width="wrap_content"
         android:layout_height="100dp"
         android:ems="10"
-        android:inputType="text"
+        android:hint="@string/add_tarea_et_descripcion"
+        android:inputType="textMultiLine"
+        android:maxLines="5"
         android:selectAllOnFocus="false"
         android:singleLine="false"
         app:layout_constraintEnd_toEndOf="parent"
@@ -57,7 +60,7 @@
         android:id="@+id/sp_categoria"
         android:layout_width="284dp"
         android:layout_height="50dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sb_tiempo" />
@@ -70,38 +73,6 @@
         android:text="@string/add_tarea_cb_prioridad"
         app:layout_constraintStart_toStartOf="@+id/sp_categoria"
         app:layout_constraintTop_toBottomOf="@+id/sp_categoria" />
-
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fg_extra"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rb_pagina" />
-
-    <RadioButton
-        android:id="@+id/rb_pagina"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/add_tarea_rb_pagina"
-        app:layout_constraintEnd_toStartOf="@+id/radioButton2"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cb_prioridad" />
-
-    <RadioButton
-        android:id="@+id/radioButton2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/add_tarea_rb_mapa"
-        app:layout_constraintBottom_toBottomOf="@+id/rb_pagina"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/rb_pagina"
-        app:layout_constraintTop_toTopOf="@+id/rb_pagina" />
 
     <SeekBar
         android:id="@+id/sb_tiempo"
@@ -122,17 +93,6 @@
         app:layout_constraintStart_toStartOf="@+id/sb_tiempo"
         app:layout_constraintTop_toBottomOf="@+id/et_descripcion" />
 
-    <Button
-        android:id="@+id/btn_enviar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="@string/add_tarea_btn_enviar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fg_extra" />
-
     <TextView
         android:id="@+id/tv_titulo"
         android:layout_width="wrap_content"
@@ -145,6 +105,55 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="bottom"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cb_prioridad">
+
+      <RadioButton
+          android:id="@+id/rb_pagina"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="20dp"
+          android:text="@string/add_tarea_rb_pagina" />
+
+      <RadioButton
+          android:id="@+id/rb_mapa"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="8dp"
+          android:text="@string/add_tarea_rb_mapa" />
+
+    </RadioGroup>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fg_extra"
+        android:layout_width="0dp"
+        android:layout_height="800dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+
+    <Button
+        android:id="@+id/btn_enviar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="@string/add_tarea_btn_enviar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fg_extra" />
 
 
   </androidx.constraintlayout.widget.ConstraintLayout>

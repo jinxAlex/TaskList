@@ -5,113 +5,81 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="12dp"
     tools:context=".MainActivity">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fg_categoria"
-        android:layout_width="0dp"
+    <EditText
+        android:id="@+id/et_email"
+        android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_email" />
+
+    <TextView
+        android:id="@+id/tv_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="@string/login_activity_tv_email"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/et_email"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_tareas_por_hacer"
+        android:id="@+id/tv_pass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        android:text="@string/main_tv_tareas_por_hacer"
+        android:layout_marginTop="40dp"
+        android:text="@string/login_activity_tv_pass"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/cardView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fg_categoria" />
+        app:layout_constraintStart_toStartOf="@+id/et_pass"
+        app:layout_constraintTop_toBottomOf="@+id/et_email" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="20dp"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="8dp"
-        app:cardUseCompatPadding="true"
-        app:layout_constraintBottom_toTopOf="@+id/separator"
+    <EditText
+        android:id="@+id/et_pass"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:ems="10"
+        android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/tv_tareas_por_hacer"
-        app:layout_constraintTop_toBottomOf="@+id/tv_tareas_por_hacer">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_pass" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_tareas_por_hacer"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </androidx.cardview.widget.CardView>
-
-    <TextView
-        android:id="@+id/tv_tareas_hechas"
+    <Button
+        android:id="@+id/btn_registrar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        android:text="@string/main_tv_tareas_hechas"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_marginTop="50dp"
+        android:text="@string/login_activity_btn_registrar"
+        app:layout_constraintEnd_toStartOf="@+id/btn_login"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/separator"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/et_pass" />
 
-    <View
-        android:id="@+id/separator"
-        android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.55" />
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginEnd="20dp"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="8dp"
-        app:cardUseCompatPadding="true"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/login_activity_btn_login"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_registrar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/tv_tareas_hechas"
-        app:layout_constraintTop_toBottomOf="@+id/tv_tareas_hechas">
+        app:layout_constraintStart_toEndOf="@+id/btn_registrar"
+        app:layout_constraintTop_toTopOf="@+id/btn_registrar" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_tareas_hechas"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </androidx.cardview.widget.CardView>
-
-
-    <ImageView
-        android:id="@+id/btn_add"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginStart="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_tareas_por_hacer"
-        app:layout_constraintStart_toEndOf="@+id/tv_tareas_por_hacer"
-        app:layout_constraintTop_toTopOf="@+id/tv_tareas_por_hacer"
-        app:srcCompat="@drawable/agregar" />
-
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/btn_google"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_registrar" />
 </androidx.constraintlayout.widget.ConstraintLayout>
