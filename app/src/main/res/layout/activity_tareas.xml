@@ -13,7 +13,7 @@
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="30dp"
         android:text="@string/main_tv_tareas_por_hacer"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -106,15 +106,14 @@
 
     <ImageButton
         android:id="@+id/btn_add"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_marginStart="10dp"
         android:backgroundTint="#C5CAE9"
         android:elevation="4dp"
         app:circularflow_radiusInDP="64dp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_tareas_por_hacer"
         app:layout_constraintStart_toEndOf="@+id/tv_tareas_por_hacer"
-        app:layout_constraintTop_toTopOf="@+id/tv_tareas_por_hacer"
         app:srcCompat="@drawable/agregar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

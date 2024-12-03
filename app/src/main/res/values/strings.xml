@@ -1,20 +1,19 @@
 <resources>
     <string name="app_name">TaskList</string>
-    <string name="main_tv_tareas_hechas"> Tareas ya terminadas</string>
-    <string name="main_tv_tareas_por_hacer"> Tareas no terminadas aún</string>
-    <string name="add_tarea_cb_prioridad"> Prioridad alta</string>
-    <string name="add_tarea_rb_pagina"> Añadir página de interés</string>
-    <string name="add_tarea_rb_mapa"> Añadir mapa</string>
-    <string name="add_tarea_btn_enviar"> Añadir tarea</string>
-    <string name="add_tarea_tv_tiempo"> Tiempo estimado: %d mins</string>
-    <string name="add_tarea_tv_nombre"> Nombre:</string>
+    <string name="main_tv_tareas_hechas">Tareas ya terminadas</string>
+    <string name="main_tv_tareas_por_hacer">Tareas no terminadas aún</string>
+    <string name="add_tarea_cb_prioridad">Prioridad alta</string>
+    <string name="add_tarea_rb_pagina">Añadir página de interés</string>
+    <string name="add_tarea_rb_mapa">Añadir mapa</string>
+    <string name="add_tarea_btn_enviar">Añadir tarea</string>
+    <string name="add_tarea_tv_tiempo">Tiempo estimado: %d mins</string>
+    <string name="add_tarea_tv_nombre">Nombre:</string>
     <string name="add_tarea_et_nombre">Nombre de la tarea....</string>
-    <string name="add_tarea_tv_descripcion"> Descripción:</string>
-    <string name="add_tarea_et_descripcion"> Introduce aquí la descripción de la tarea</string>
+    <string name="add_tarea_tv_descripcion">Descripción:</string>
+    <string name="add_tarea_et_descripcion">Introduce aquí la descripción de la tarea</string>
     <string name="add_tarea_tv_titulo"> Añadir tarea</string>
     <string name="login_activity_tv_email">Email: </string>
     <string name="login_activity_tv_pass">Contraseña: </string>
     <string name="login_activity_btn_registrar">Registrarme </string>
     <string name="login_activity_btn_login">Iniciar sesión </string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

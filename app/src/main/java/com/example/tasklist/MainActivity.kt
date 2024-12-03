@@ -2,6 +2,7 @@ package com.example.tasklist
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
@@ -12,13 +13,36 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.tasklist.databinding.ActivityMainBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
 
 class MainActivity : AppCompatActivity() {
 
+    private val responseLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+        if(it.resultCode == RESULT_OK){
+            val datos = GoogleSignIn.getSignedInAccountFromIntent(it.data)
+            try {
+                val cuenta = datos.getResult(ApiException::class.java)
+                if(cuenta != null) {
+                    val credenciales = GoogleAuthProvider.getCredential(cuenta.idToken, null)
+                    FirebaseAuth.getInstance().signInWithCredential(credenciales)
+                        .addOnCompleteListener {
+                            if (it.isSuccessful)
+                                irTareasActivity()
+                        }
+                        .addOnFailureListener{
+                            Toast.makeText(this,it.message.toString(),Toast.LENGTH_SHORT)
+                        }
+                    }
 
+                }catch (e: Exception){
+                    Toast.makeText(this,"ERROR",Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 
     private  lateinit var binding: ActivityMainBinding
 
@@ -68,7 +92,7 @@ class MainActivity : AppCompatActivity() {
 
         googleClient.signOut()
 
-        //responseLauncher.launch(googleClient.signInIntent)
+        responseLauncher.launch(googleClient.signInIntent)
     }
 
     private fun datosCorrectos(): Boolean{
