@@ -1,6 +1,7 @@
 package com.example.tasklist
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -41,7 +42,7 @@ class AddCategoria : AppCompatActivity() {
     }
 
     private fun setRecycler() {
-        val layout = GridLayoutManager(this,6)
+        val layout = GridLayoutManager(this,4)
         binding.recycler.layoutManager = layout
 
         binding.recycler.adapter = adapter
@@ -50,13 +51,14 @@ class AddCategoria : AppCompatActivity() {
     private fun pintarIconos() {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                val iconos = ApiIcono.api.getIconos("HANlqhzPE5tOF85NLRV57IimCvFnmvPoPb17Afk23gEumiZJ29i6S3YrAwRT5ocp","arrow", 10 )
+                val iconos = ApiIcono.api.getIconos(getString(R.string.icon_api_key),"book", 10 )
 
                 val lista = iconos.body()?.listaIconos ?: mutableListOf()
 
                 withContext(Dispatchers.Main) {
                     if (lista.isNotEmpty()) {
                         adapter.lista = lista
+                        Log.d("LISTA",lista.toString())
                         adapter.notifyDataSetChanged()
                     } else {
                         Toast.makeText(this@AddCategoria, "No se encontraron iconos", Toast.LENGTH_SHORT).show()

@@ -10,11 +10,8 @@ class IconosViewHolder(v: View): RecyclerView.ViewHolder(v) {
     val binding = IconoLayoutBinding.bind(v)
 
     fun render(icono: Icono){
-        val url = icono.rasterSizes.firstOrNull()
-            ?.formats
-            ?.firstOrNull()
-            ?.previewUrl
+        val url = "${icono.rasterSizes.lastOrNull()?.formats?.firstOrNull()?.previewUrl}?size=large"
 
-/*        Picasso.get().load(url).into(binding.iv)*/
+        Picasso.get().load(url).resize(50, 50).into(binding.iv)
     }
 }

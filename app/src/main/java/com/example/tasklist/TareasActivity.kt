@@ -14,8 +14,13 @@ import com.example.tasklist.adapters.TareasAdapter
 import com.example.tasklist.databinding.ActivityTareasBinding
 import com.example.tasklist.models.Tarea
 import com.example.tasklist.providers.db.Crud
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
 
 class TareasActivity : AppCompatActivity() {
+
+    private lateinit var auth: FirebaseAuth
 
     private  lateinit var binding: ActivityTareasBinding
 
@@ -39,9 +44,12 @@ class TareasActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        auth = Firebase.auth
         cargarFragment()
         setListeners()
         setRecyclers()
+        val i = Intent(this,AddCategoria::class.java)
+        startActivity(i)
     }
 
     private fun actualizarTablas() {
@@ -96,11 +104,15 @@ class TareasActivity : AppCompatActivity() {
             val i = Intent(this, AddTarea::class.java)
             startActivity(i)
         }
+        binding.btnCerrarSesion.setOnClickListener{
+            auth.signOut()
+            finish()
+        }
     }
 
     private fun cargarFragment() {
         val array : ArrayList<String> = arrayListOf("Categoria1")
-        val fg = FragmentCategorias()
+        val fg = FragmentCategorias(array)
         supportFragmentManager.commit {
             setReorderingAllowed(true)
             add(R.id.fg_categoria,fg)
