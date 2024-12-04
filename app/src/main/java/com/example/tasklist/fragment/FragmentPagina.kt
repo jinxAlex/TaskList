@@ -10,7 +10,7 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.example.tasklist.R
-import androidx.appcompat.widget.SearchView
+import android.widget.SearchView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 
 class FragmentPagina : Fragment() {

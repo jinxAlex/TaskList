@@ -49,6 +49,7 @@ class TareasActivity : AppCompatActivity() {
         }
         auth = Firebase.auth
         preferences = Preferences(this)
+        binding.tvEmailIniciadoSesion.setText(auth.currentUser?.email)
         cargarFragment()
         setListeners()
         setRecyclers()
@@ -110,10 +111,15 @@ class TareasActivity : AppCompatActivity() {
             auth.signOut()
             finish()
         }
+        binding.btnAddCategoria.setOnClickListener {
+            val i = Intent(this, AddCategoria::class.java)
+            startActivity(i)
+        }
     }
 
     private fun cargarFragment() {
-        val array : ArrayList<String> = ArrayList(preferences.getArray())
+        val array : MutableList<String> = preferences.getArray().toMutableList()
+        Log.d("ICONOS",array.toString())
         val fg = FragmentCategorias(array)
         supportFragmentManager.commit {
             setReorderingAllowed(true)

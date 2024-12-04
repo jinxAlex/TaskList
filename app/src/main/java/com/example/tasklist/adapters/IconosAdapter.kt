@@ -7,7 +7,8 @@ import com.example.tasklist.R
 import com.example.tasklist.models.Icono
 
 class IconosAdapter(
-    var lista: MutableList<Icono>
+    var lista: MutableList<Icono>,
+    val obtenerIcono: (String) -> Unit
 ): RecyclerView.Adapter<IconosViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IconosViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.icono_layout,parent,false)
@@ -18,6 +19,6 @@ class IconosAdapter(
 
     override fun onBindViewHolder(holder: IconosViewHolder, position: Int) {
         val icono = lista[position]
-        holder.render(icono)
+        holder.render(icono,obtenerIcono)
     }
 }

@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">TaskList</string>
+    <string name="main_btn_cerrar_sesion">Cerrar sesión</string>
+    <string name="main_btn_add_categoria">Agregar categoría</string>
     <string name="main_tv_tareas_hechas">Tareas ya terminadas</string>
     <string name="main_btn_agregar">Agregar tarea</string>
     <string name="main_tv_tareas_por_hacer">Tareas no terminadas aún</string>
@@ -17,4 +19,10 @@
     <string name="login_activity_tv_pass">Contraseña: </string>
     <string name="login_activity_btn_registrar">Registrarme </string>
     <string name="login_activity_btn_login">Iniciar sesión </string>
+    <string name="add_categoria_tv_nombre">Nombre categoría:</string>
+    <string name="add_categoria_tv_busqueda">Buscar icono para categoría:</string>
+    <string name="add_categoria_et_nombre">Nombre del icono....</string>
+    <string name="add_categoria_searchview">Icono a buscar....</string>
+    <string name="add_categoria_btn_agregar">Agregar categoría</string>
+    <string name="add_categoria_btn_cancelar">Cancelar</string>
 </resources>

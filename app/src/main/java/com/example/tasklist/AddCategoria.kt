@@ -1,10 +1,12 @@
 package com.example.tasklist
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import android.widget.SearchView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
@@ -19,11 +21,16 @@ import kotlinx.coroutines.withContext
 
 class AddCategoria : AppCompatActivity() {
 
+    private lateinit var preferences: Preferences
+
+    private var urlIcono: String = ""
+
     private lateinit var binding: ActivityAddCategoriaBinding
 
     private var listaIconos = mutableListOf<Icono>()
 
-    private val adapter = IconosAdapter(listaIconos)
+    private val adapter = IconosAdapter(listaIconos) { obtenerIcono(it) }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,9 +43,52 @@ class AddCategoria : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
+        preferences = Preferences(this)
         setRecycler()
-        pintarIconos()
+        setlisteners()
+    }
+
+    private fun setlisteners() {
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                pintarIconos(query.toString().lowercase().trim())
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return true
+            }
+
+        })
+        binding.btnAgregar.setOnClickListener {
+            if(comprobarDatos()){
+                val array: MutableList<String> = preferences.getArray().toMutableList()
+                array.add(String.format("%s %s",binding.etNombreCategoria.text.toString().trim(),urlIcono))
+                preferences.setArray(array)
+                val i = Intent(this,TareasActivity::class.java)
+                startActivity(i)
+            }
+        }
+        binding.btnCancelar.setOnClickListener {
+            finish()
+        }
+    }
+
+    private fun comprobarDatos(): Boolean {
+        var esCorrecto = true
+        if(binding.tvNombre.text.isEmpty()){
+            esCorrecto = false
+            Toast.makeText(this,"El nombre introducido no es valido", Toast.LENGTH_SHORT).show()
+        }
+        if(urlIcono.isEmpty()){
+            esCorrecto = false
+            Toast.makeText(this,"Debes elegir un icono", Toast.LENGTH_SHORT).show()
+        }
+        return esCorrecto
+    }
+
+    private fun obtenerIcono(url: String) {
+        urlIcono = url
     }
 
     private fun setRecycler() {
@@ -48,13 +98,12 @@ class AddCategoria : AppCompatActivity() {
         binding.recycler.adapter = adapter
     }
 
-    private fun pintarIconos() {
+    private fun pintarIconos(busqueda: String) {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                val iconos = ApiIcono.api.getIconos(getString(R.string.icon_api_key),"book", 10 )
+                val iconos = ApiIcono.api.getIconos(getString(R.string.icon_api_key),busqueda, 20)
 
                 val lista = iconos.body()?.listaIconos ?: mutableListOf()
-
                 withContext(Dispatchers.Main) {
                     if (lista.isNotEmpty()) {
                         adapter.lista = lista
