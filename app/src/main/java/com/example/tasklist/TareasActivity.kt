@@ -26,10 +26,11 @@ class TareasActivity : AppCompatActivity() {
 
     private lateinit var preferences: Preferences
 
+    private lateinit var categorias: MutableList<String>
+
     private var listaTareasPorHacer = Crud().readTareas(false)
 
     private var listaTareasHechas = Crud().readTareas(true)
-
 
     private val adapterTareasPorHacer = TareasAdapter(listaTareasPorHacer,{ actualizarEstado(it) }, {borrarTarea(it)}, {actualizarTarea(it)})
 
@@ -49,6 +50,7 @@ class TareasActivity : AppCompatActivity() {
         }
         auth = Firebase.auth
         preferences = Preferences(this)
+        categorias = preferences.getArray().toMutableList()
         binding.tvEmailIniciadoSesion.setText(auth.currentUser?.email)
         cargarFragment()
         setListeners()
@@ -112,15 +114,33 @@ class TareasActivity : AppCompatActivity() {
             finish()
         }
         binding.btnAddCategoria.setOnClickListener {
-            val i = Intent(this, AddCategoria::class.java)
-            startActivity(i)
+            val nombreCategorias = obtenerCategorias()
+            if(nombreCategorias.isNotEmpty()){
+                val i = Intent(this, AddCategoria::class.java)
+                val bundle = Bundle().apply {
+                    putStringArrayList("CATEGORIAS",ArrayList(nombreCategorias))
+                }
+                i.putExtras(bundle)
+                startActivity(i)
+            }
+
         }
     }
 
+    private fun obtenerCategorias(): MutableList<String> {
+        Log.d("DATOS",categorias.toString())
+        var nombresCategorias: MutableList<String> = mutableListOf()
+        for(categoriaLista in categorias){
+            val categoria = categoriaLista.trim().split(" ")
+            nombresCategorias.add(categoria[0])
+        }
+
+        return nombresCategorias
+    }
+
     private fun cargarFragment() {
-        val array : MutableList<String> = preferences.getArray().toMutableList()
-        Log.d("ICONOS",array.toString())
-        val fg = FragmentCategorias(array)
+        //val array: MutableList<String> = preferences.getArray().toMutableList()
+        val fg = FragmentCategorias(categorias)
         supportFragmentManager.commit {
             setReorderingAllowed(true)
             add(R.id.fg_categoria,fg)

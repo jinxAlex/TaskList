@@ -81,6 +81,7 @@
         android:layout_height="50dp"
         android:progress="1"
         app:layout_constraintEnd_toEndOf="parent"
+        android:max="120"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_tiempo" />
@@ -135,27 +136,28 @@
 
     </RadioGroup>
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fg_extra"
-        android:layout_width="0dp"
-        android:layout_height="800dp"
-        android:layout_marginTop="30dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
-
     <Button
         android:id="@+id/btn_enviar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:backgroundTint="#d0bdf6"
         android:text="@string/add_tarea_btn_enviar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fg_extra" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_extras" />
+
+    <TextView
+        android:id="@+id/tv_extras"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
 
 
   </androidx.constraintlayout.widget.ConstraintLayout>

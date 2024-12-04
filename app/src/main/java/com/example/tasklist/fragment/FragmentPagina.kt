@@ -13,7 +13,9 @@ import com.example.tasklist.R
 import android.widget.SearchView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 
-class FragmentPagina : Fragment() {
+class FragmentPagina(
+    private val enviarPaginaActivityExtra:(String) -> Unit
+) : Fragment() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,6 +45,7 @@ class FragmentPagina : Fragment() {
                 val busqueda = query.toString().lowercase().trim()
                 if (android.util.Patterns.WEB_URL.matcher(busqueda).matches()) {
                     webView?.loadUrl(busqueda)
+                    enviarPaginaActivityExtra(busqueda)
                     return true
                 }
                 val url = "https://www.google.es/search?q=${busqueda}"

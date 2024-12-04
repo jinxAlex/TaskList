@@ -1,49 +1,48 @@
 package com.example.tasklist
 
 import android.os.Bundle
-import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.provider.Settings
+import android.util.Log
+import android.widget.ArrayAdapter
 import android.widget.SeekBar
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.fragment.app.commit
 import com.example.tasklist.databinding.ActivityAddTareaBinding
-import com.example.tasklist.fragment.FragmentPagina
 import com.example.tasklist.models.Tarea
 import com.example.tasklist.providers.db.Crud
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
 
-class AddTarea : AppCompatActivity(), SeekBar.OnSeekBarChangeListener, OnMapReadyCallback {
+class AddTarea : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
 
-    private val locationPermissionRequest = registerForActivityResult(
-        ActivityResultContracts.RequestMultiplePermissions()){
-            permisos -> if(permisos[Manifest.permission.ACCESS_FINE_LOCATION] == true || permisos[Manifest.permission.ACCESS_COARSE_LOCATION] == true) {
-                mostrarUbicacion()
-            }else{
-                Toast.makeText(this,"ERROR: El usuario ha denegado los permisos", Toast.LENGTH_SHORT).show()
+    val responseLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+        when(it.resultCode){
+            RESULT_OK ->{
+                when(binding.radioGroup.checkedRadioButtonId){
+                    R.id.rb_pagina -> {
+                        val dato = it.data?.getStringExtra("URL").toString()
+                        Log.d("URL MAIN",dato)
+                        binding.tvExtras.setText(dato)
+                    }
+                    R.id.rb_mapa -> {
+                        val dato = it.data?.getStringExtra("COORDENADAS").toString()
+                        binding.tvExtras.setText(dato)
+                    }
+                }
             }
+            RESULT_CANCELED -> {
+
+            }
+        }
     }
-
-    private lateinit var map: GoogleMap
-
-    private lateinit var fgMapa: SupportMapFragment
-
-    private lateinit var fgPagina: FragmentPagina
 
     private var editable: Boolean = false
 
     private lateinit var binding: ActivityAddTareaBinding
+
+    private lateinit var categorias: ArrayList<String>
 
     private var id= -1
 
@@ -59,10 +58,20 @@ class AddTarea : AppCompatActivity(), SeekBar.OnSeekBarChangeListener, OnMapRead
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        recogerDatos()
+        ponerDatos()
         setListeners()
+    }
+
+    private fun recogerDatos() {
+        val datos = intent.extras
+        categorias= datos?.getStringArrayList("CATEGORIAS")?: arrayListOf()
+    }
+
+    private fun ponerDatos() {
+        Log.d("DATOS",categorias.toString())
+        binding.spCategoria.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item,categorias)
         ponerMinutos()
-        binding.rbPagina.isChecked = true
-        ponerPagina()
     }
 
 
@@ -84,12 +93,21 @@ class AddTarea : AppCompatActivity(), SeekBar.OnSeekBarChangeListener, OnMapRead
             }
         }
         binding.rbPagina.setOnClickListener{
-            ponerPagina()
+            irActivityExtra(0)
         }
         binding.rbMapa.setOnClickListener{
-            ponerMapa()
+            irActivityExtra(1)
         }
         binding.sbTiempo.setOnSeekBarChangeListener(this)
+    }
+
+    private fun irActivityExtra(tipoFragment: Int) {
+        val bundle = Bundle().apply {
+            putInt("TIPO",tipoFragment)
+        }
+        val i = Intent(this,ActivityExtras::class.java)
+        i.putExtras(bundle)
+        responseLauncher.launch(i)
     }
 
     private fun enviarDatos() {
@@ -114,70 +132,6 @@ class AddTarea : AppCompatActivity(), SeekBar.OnSeekBarChangeListener, OnMapRead
         binding.tvTiempo.setText(String.format(getString(R.string.add_tarea_tv_tiempo),binding.sbTiempo.progress))
     }
 
-
-    private fun ponerMapa() {
-        val fgMapa = SupportMapFragment()
-        fgMapa.getMapAsync(this)
-        supportFragmentManager.commit {
-            setReorderingAllowed(false)
-            replace(R.id.fg_extra,fgMapa)
-        }
-    }
-
-    private fun mostrarUbicacion(){
-        if(::map.isInitialized){
-            if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                ||
-                ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-                    map.isMyLocationEnabled = true
-                    map.uiSettings.isMyLocationButtonEnabled = true
-            }else{
-                solicitarPermisos()
-            }
-        }
-    }
-
-    private fun solicitarPermisos() {
-        if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)
-            ||
-            ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_COARSE_LOCATION)){
-            mostrarExplicacion()
-        }else{
-            escogerPermisos()
-        }
-    }
-
-    private fun mostrarExplicacion() {
-        AlertDialog.Builder(this)
-            .setTitle("Permisos de Ubicación")
-            .setMessage("Para poder establecer un punto para la tarea es necesario el permiso de ubicación")
-            .setNegativeButton("Cancelar") { dialog, _ ->
-                dialog.dismiss()
-            }
-            .setCancelable(false)
-            .setPositiveButton("Aceptar") { dialog, _ ->
-                startActivity(Intent(Settings.ACTION_APPLICATION_SETTINGS))
-                dialog.dismiss()
-
-            }
-            .create()
-            .show()
-    }
-
-    private fun escogerPermisos(){
-        locationPermissionRequest.launch(
-            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
-        )
-    }
-
-    private fun ponerPagina() {
-        fgPagina = FragmentPagina()
-        supportFragmentManager.commit {
-            setReorderingAllowed(false)
-            replace(R.id.fg_extra,fgPagina)
-        }
-    }
-
     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
         ponerMinutos()
     }
@@ -186,9 +140,5 @@ class AddTarea : AppCompatActivity(), SeekBar.OnSeekBarChangeListener, OnMapRead
 
     override fun onStopTrackingTouch(seekBar: SeekBar?) {}
 
-    override fun onMapReady(p0: GoogleMap) {
-        map = p0
-        map.uiSettings.isZoomControlsEnabled = true
-        mostrarUbicacion()
-    }
+
 }
