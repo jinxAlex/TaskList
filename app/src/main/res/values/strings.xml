@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">TaskList</string>
     <string name="main_tv_tareas_hechas">Tareas ya terminadas</string>
+    <string name="main_btn_agregar">Agregar tarea</string>
     <string name="main_tv_tareas_por_hacer">Tareas no terminadas aún</string>
     <string name="add_tarea_cb_prioridad">Prioridad alta</string>
     <string name="add_tarea_rb_pagina">Añadir página de interés</string>

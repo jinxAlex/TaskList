@@ -24,9 +24,12 @@ class TareasActivity : AppCompatActivity() {
 
     private  lateinit var binding: ActivityTareasBinding
 
+    private lateinit var preferences: Preferences
+
     private var listaTareasPorHacer = Crud().readTareas(false)
 
     private var listaTareasHechas = Crud().readTareas(true)
+
 
     private val adapterTareasPorHacer = TareasAdapter(listaTareasPorHacer,{ actualizarEstado(it) }, {borrarTarea(it)}, {actualizarTarea(it)})
 
@@ -45,11 +48,10 @@ class TareasActivity : AppCompatActivity() {
             insets
         }
         auth = Firebase.auth
+        preferences = Preferences(this)
         cargarFragment()
         setListeners()
         setRecyclers()
-        val i = Intent(this,AddCategoria::class.java)
-        startActivity(i)
     }
 
     private fun actualizarTablas() {
@@ -111,7 +113,7 @@ class TareasActivity : AppCompatActivity() {
     }
 
     private fun cargarFragment() {
-        val array : ArrayList<String> = arrayListOf("Categoria1")
+        val array : ArrayList<String> = ArrayList(preferences.getArray())
         val fg = FragmentCategorias(array)
         supportFragmentManager.commit {
             setReorderingAllowed(true)
