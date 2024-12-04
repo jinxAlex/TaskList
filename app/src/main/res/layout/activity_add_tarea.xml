@@ -88,7 +88,7 @@
         android:id="@+id/tv_tiempo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="20dp"
         android:text="@string/add_tarea_tv_tiempo"
         app:layout_constraintStart_toStartOf="@+id/sb_tiempo"
         app:layout_constraintTop_toBottomOf="@+id/et_descripcion" />
@@ -110,7 +110,7 @@
         android:id="@+id/radioGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:gravity="bottom"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"

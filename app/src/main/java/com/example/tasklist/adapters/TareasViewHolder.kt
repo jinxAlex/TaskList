@@ -10,7 +10,7 @@ import com.example.tasklist.models.Tarea
 class TareasViewHolder(v: View): RecyclerView.ViewHolder(v) {
     val binding = TareasLayoutBinding.bind(v)
 
-    fun render(tarea: Tarea, actualizarEstado: (Tarea) -> Unit) {
+    fun render(tarea: Tarea, actualizarEstado: (Tarea) -> Unit, borrarTarea: (Tarea) -> Unit, actualizarTarea: (Tarea) -> Unit) {
         binding.cb.text = tarea.nombre
         if(tarea.finalizado){
             binding.cb.isChecked = true
@@ -18,6 +18,12 @@ class TareasViewHolder(v: View): RecyclerView.ViewHolder(v) {
         }
         binding.cb.setOnClickListener{
             actualizarEstado(tarea)
+        }
+        binding.btnBorrar.setOnClickListener{
+            borrarTarea(tarea)
+        }
+        binding.btnDetalle.setOnClickListener{
+            actualizarTarea(tarea)
         }
     }
 }

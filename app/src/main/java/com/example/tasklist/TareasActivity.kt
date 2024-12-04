@@ -23,9 +23,9 @@ class TareasActivity : AppCompatActivity() {
 
     private var listaTareasHechas = Crud().readTareas(true)
 
-    private val adapterTareasPorHacer = TareasAdapter(listaTareasPorHacer) { actualizarEstado(it) }
+    private val adapterTareasPorHacer = TareasAdapter(listaTareasPorHacer,{ actualizarEstado(it) }, {borrarTarea(it)}, {actualizarTarea(it)})
 
-    private val adapterTareasHechas = TareasAdapter(listaTareasHechas) { actualizarEstado(it) }
+    private val adapterTareasHechas = TareasAdapter(listaTareasHechas, { actualizarEstado(it) }, { borrarTarea(it) },{actualizarTarea(it)})
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,23 +60,29 @@ class TareasActivity : AppCompatActivity() {
             false -> true
         }
         if (Crud().update(tarea)) {
-            Log.d("TAREA",tarea.toString())
             onRestart()
         }
     }
+
+    private fun borrarTarea(tarea: Tarea) {
+        if(Crud().borrar(tarea)){
+            onRestart()
+        }
+    }
+
+    private fun actualizarTarea(tarea: Tarea) {
+
+    }
+
 
     private fun setRecyclers() {
         val layout1 = LinearLayoutManager(this)
         val layout2 = LinearLayoutManager(this)
         actualizarTablas()
-        binding.recyclerTareasPorHacer.adapter = TareasAdapter(listaTareasPorHacer) {
-            actualizarEstado(it)
-        }
+        binding.recyclerTareasPorHacer.adapter = TareasAdapter(listaTareasPorHacer,{actualizarEstado(it)}, {borrarTarea(it)}, {actualizarTarea(it)})
         binding.recyclerTareasPorHacer.layoutManager = layout1
 
-        binding.recyclerTareasHechas.adapter = TareasAdapter(listaTareasHechas) {
-            actualizarEstado(it)
-        }
+        binding.recyclerTareasHechas.adapter = TareasAdapter(listaTareasHechas,{actualizarEstado(it)}, {borrarTarea(it)}, {actualizarTarea(it)})
         binding.recyclerTareasHechas.layoutManager = layout2
     }
 

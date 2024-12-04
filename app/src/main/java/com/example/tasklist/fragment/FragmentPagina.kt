@@ -38,10 +38,10 @@ class FragmentPagina : Fragment() {
         val swipe = view?.findViewById<SwipeRefreshLayout>(R.id.swipe)
         val webView = view?.findViewById<WebView>(R.id.web_view) // Aqui no hay binding, por ende hay que buscar el id
         val searchView = view?.findViewById<SearchView>(R.id.search_view)
-        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 val busqueda = query.toString().lowercase().trim()
-                if(android.util.Patterns.WEB_URL.matcher(busqueda).matches()){
+                if (android.util.Patterns.WEB_URL.matcher(busqueda).matches()) {
                     webView?.loadUrl(busqueda)
                     return true
                 }
@@ -55,7 +55,7 @@ class FragmentPagina : Fragment() {
             }
 
         })
-        webView?.webViewClient = object :WebViewClient(){
+        webView?.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(
                 view: WebView?,
                 request: WebResourceRequest?

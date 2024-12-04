@@ -20,6 +20,13 @@ class Crud {
         }
     }
 
+    fun borrar(tarea: Tarea): Boolean{
+        val con = Aplicacion.llave.writableDatabase
+        val tareaBorrada = con.delete(Aplicacion.TABLA,"id = ?", arrayOf(tarea.id.toString()))
+        con.close()
+        return tareaBorrada != 0
+    }
+
     fun update(tarea: Tarea):Boolean{
         val con = Aplicacion.llave.writableDatabase
         val tareaValues = tarea.toContentValues()
@@ -31,7 +38,7 @@ class Crud {
         }
         cursor.close()
         con.close()
-        return filasAfectadas > 0
+        return filasAfectadas != 0
     }
 
     fun readTareas(finalizado: Boolean): MutableList<Tarea>{
