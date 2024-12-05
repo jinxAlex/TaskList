@@ -21,6 +21,7 @@ import com.example.tasklist.fragment.FragmentPagina
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.MarkerOptions
 
 class ActivityExtras : AppCompatActivity(), OnMapReadyCallback {
 
@@ -37,7 +38,7 @@ class ActivityExtras : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var map: GoogleMap
 
-    private var coordenada = ""
+    private var localizacion = ""
 
     private var urlPagina = ""
 
@@ -76,7 +77,7 @@ class ActivityExtras : AppCompatActivity(), OnMapReadyCallback {
                 bundle.putString("URL",urlPagina)
             }
             1 ->{
-                bundle.putString("COORDENADAS",coordenada)
+                bundle.putString("COORDENADAS",localizacion)
             }
         }
         i.putExtras(bundle)
@@ -117,8 +118,14 @@ class ActivityExtras : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(p0: GoogleMap) {
         map = p0
         map.uiSettings.isZoomControlsEnabled = true
+        map.setOnMapClickListener { latLng ->
+            map.clear()
+            map.addMarker(MarkerOptions().position(latLng))
+            localizacion = String.format("%.6f %.6f", latLng.latitude, latLng.longitude)
+        }
         mostrarUbicacion()
     }
+
 
     private fun mostrarUbicacion(){
         if(::map.isInitialized){

@@ -2,7 +2,6 @@ package com.example.tasklist
 
 import android.os.Bundle
 import android.content.Intent
-import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.SeekBar
 import android.widget.Toast
@@ -23,11 +22,13 @@ class AddTarea : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
                 when(binding.radioGroup.checkedRadioButtonId){
                     R.id.rb_pagina -> {
                         val dato = it.data?.getStringExtra("URL").toString()
-                        ponerExtras(String.format("Página añadida: %s", dato))
+                        ponerExtras(String.format(getString(R.string.add_tarea_tv_extras_pagina), dato))
+                        pagina = dato
                     }
                     R.id.rb_mapa -> {
                         val dato = it.data?.getStringExtra("COORDENADAS").toString()
-                        ponerExtras(String.format("Localización: %s", dato))
+                        ponerExtras(String.format(getString(R.string.add_tarea_tv_extras_mapa), dato))
+                        localizacion = dato
                     }
                 }
             }
@@ -80,14 +81,21 @@ class AddTarea : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
     private fun ponerDatos() {
         binding.spCategoria.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item,categorias)
         if(editable){
+            binding.tvTitulo.text = getString(R.string.add_tarea_tv_titulo_editar)
             binding.etNombre.setText(tareaEditar.nombre)
             binding.etDescripcion.setText(tareaEditar.descripcion)
             binding.sbTiempo.progress = tareaEditar.tiempo
+            binding.spCategoria.setSelection(categorias.indexOf(tareaEditar.categoria))
+            binding.btnEnviar.text = getString(R.string.add_tarea_btn_editar)
             id = tareaEditar.id
             if(tareaEditar.localizacion.isEmpty()){
                 binding.rbPagina.isChecked = true
+                pagina = tareaEditar.pagina
+                binding.tvExtras.setText(String.format(getString(R.string.add_tarea_tv_extras_pagina), pagina))
             }else{
-
+                binding.rbMapa.isChecked = true
+                localizacion = tareaEditar.localizacion
+                binding.tvExtras.setText(String.format(getString(R.string.add_tarea_tv_extras_mapa), localizacion))
             }
         }
         ponerMinutos()
@@ -100,6 +108,9 @@ class AddTarea : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
             esCorrecto = false
         }
         if(binding.etDescripcion.text.isEmpty()){
+            esCorrecto = false
+        }
+        if(binding.sbTiempo.progress == 0){
             esCorrecto = false
         }
         return esCorrecto
@@ -130,29 +141,47 @@ class AddTarea : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
     }
 
     private fun enviarDatos() {
-        val tarea = Tarea(id,
-            binding.etNombre.text.toString(),
-            binding.etDescripcion.text.toString(),
-            binding.sbTiempo.progress,
-            false,
-            "",
-            "",
-            "",
-            binding.cbPrioridad.isChecked)
-        if(Crud().create(tarea)!= -1L){
-            Toast.makeText(this,"Se ha añadido la tarea", Toast.LENGTH_LONG)
-            finish()
+        if(editable){
+            val tarea = Tarea(id,
+                binding.etNombre.text.toString(),
+                binding.etDescripcion.text.toString(),
+                binding.sbTiempo.progress,
+                false,
+                binding.spCategoria.getItemAtPosition(binding.spCategoria.selectedItemPosition).toString(),
+                localizacion,
+                pagina,
+                binding.cbPrioridad.isChecked)
+            if(Crud().update(tarea)){
+                Toast.makeText(this,"Se ha modificado la tarea", Toast.LENGTH_LONG).show()
+                finish()
+            }else{
+                Toast.makeText(this,"ERROR: El nombre no puede estar duplicado", Toast.LENGTH_LONG).show()
+            }
         }else{
-            Toast.makeText(this,"ERROR: El nombre no puede estar duplicado", Toast.LENGTH_LONG)
+            val tarea = Tarea(id,
+                binding.etNombre.text.toString(),
+                binding.etDescripcion.text.toString(),
+                binding.sbTiempo.progress,
+                false,
+                binding.spCategoria.getItemAtPosition(binding.spCategoria.selectedItemPosition).toString(),
+                localizacion,
+                pagina,
+                binding.cbPrioridad.isChecked)
+            if(Crud().create(tarea)!= -1L){
+                Toast.makeText(this,"Se ha añadido la tarea", Toast.LENGTH_LONG).show()
+                finish()
+            }else{
+                Toast.makeText(this,"ERROR: El nombre no puede estar duplicado", Toast.LENGTH_LONG).show()
+            }
         }
     }
 
     private fun ponerExtras(string: String){
-        binding.tvExtras.setText(string)
+        binding.tvExtras.text = string
     }
 
     private fun ponerMinutos() {
-        binding.tvTiempo.setText(String.format(getString(R.string.add_tarea_tv_tiempo),binding.sbTiempo.progress))
+        binding.tvTiempo.text = String.format(getString(R.string.add_tarea_tv_tiempo),binding.sbTiempo.progress)
     }
 
     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {

@@ -9,10 +9,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.tasklist.adapters.IconosAdapter
-import com.example.tasklist.fragment.FragmentCategorias
+import androidx.recyclerview.widget.RecyclerView
+import com.example.tasklist.adapters.CategoriasAdapter
 import com.example.tasklist.adapters.TareasAdapter
 import com.example.tasklist.databinding.ActivityTareasBinding
 import com.example.tasklist.models.Tarea
@@ -23,18 +22,9 @@ import com.google.firebase.auth.auth
 
 class TareasActivity : AppCompatActivity() {
 
-    private val responseLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-        when(it.resultCode){
-            RESULT_OK -> {
-
-            }
-            RESULT_CANCELED ->{
-
-            }
-        }
-    }
-
     private lateinit var auth: FirebaseAuth
+
+    private var categoriaActual = 0
 
     private  lateinit var binding: ActivityTareasBinding
 
@@ -45,8 +35,6 @@ class TareasActivity : AppCompatActivity() {
     private var listaTareasPorHacer = Crud().readTareas(false)
 
     private var listaTareasHechas = Crud().readTareas(true)
-
-    private lateinit var adapterCategorias: IconosAdapter
 
     private val adapterTareasPorHacer = TareasAdapter(listaTareasPorHacer,{ actualizarEstado(it) }, {borrarTarea(it)}, {actualizarTarea(it)})
 
@@ -81,6 +69,7 @@ class TareasActivity : AppCompatActivity() {
         listaTareasHechas.clear()
         listaTareasHechas.addAll(Crud().readTareas(true))
         adapterTareasHechas.notifyDataSetChanged()
+
     }
 
     private fun actualizarEstado(tarea: Tarea) {
@@ -105,14 +94,28 @@ class TareasActivity : AppCompatActivity() {
         }
     }
 
+    private fun cambiarCategoria(posicion: Int) {
+        categoriaActual = posicion
+    }
+
+    private fun borrarCategoria(posicion: Int) {
+        val listaCategoria = preferences.getArray().toMutableList()
+        listaCategoria.removeAt(posicion)
+        preferences.setArray(listaCategoria)
+        setRecyclers()
+        Log.d("CATEGORIAS",preferences.getArray().toString())
+    }
+
     private fun actualizarTarea(tarea: Tarea) {
         val bundle = Bundle().apply {
+            val nombreCategorias = descomponerCategorias(0)
+            putStringArrayList("CATEGORIAS",ArrayList(nombreCategorias))
             putBoolean("EDITABLE",true)
             putSerializable("TAREA",tarea)
         }
         val i = Intent(this,AddTarea::class.java)
         i.putExtras(bundle)
-        responseLauncher.launch(i)
+        startActivity(i)
     }
 
 
@@ -120,6 +123,7 @@ class TareasActivity : AppCompatActivity() {
         val layout1 = LinearLayoutManager(this)
         val layout2 = LinearLayoutManager(this)
         val layout3 = LinearLayoutManager(this)
+        layout3.orientation = RecyclerView.HORIZONTAL
         actualizarTablas()
         binding.recyclerTareasPorHacer.adapter = TareasAdapter(listaTareasPorHacer,{actualizarEstado(it)}, {borrarTarea(it)}, {actualizarTarea(it)})
         binding.recyclerTareasPorHacer.layoutManager = layout1
@@ -127,7 +131,7 @@ class TareasActivity : AppCompatActivity() {
         binding.recyclerTareasHechas.adapter = TareasAdapter(listaTareasHechas,{actualizarEstado(it)}, {borrarTarea(it)}, {actualizarTarea(it)})
         binding.recyclerTareasHechas.layoutManager = layout2
 
-        //binding.recyclerCategorias.adapter = IconosAdapter(obtenerIconos())
+        binding.recyclerCategorias.adapter = CategoriasAdapter(descomponerCategorias(1),{cambiarCategoria(it)})
         binding.recyclerCategorias.layoutManager = layout3
     }
 
@@ -138,7 +142,7 @@ class TareasActivity : AppCompatActivity() {
 
     private fun setListeners() {
         binding.btnAdd.setOnClickListener {
-            val nombreCategorias = obtenerCategorias()
+            val nombreCategorias = descomponerCategorias(0)
             if(nombreCategorias.isNotEmpty()){
                 val i = Intent(this, AddTarea::class.java)
                 val bundle = Bundle().apply {
@@ -158,33 +162,18 @@ class TareasActivity : AppCompatActivity() {
             val i = Intent(this, AddCategoria::class.java)
             startActivity(i)
         }
+        binding.btnBorrarCategoria.setOnClickListener {
+            borrarCategoria(categoriaActual)
+            setRecyclers()
+        }
     }
 
-    private fun obtenerCategorias(): MutableList<String> {
+    private fun descomponerCategorias(posicion: Int): MutableList<String> {
         var nombresCategorias: MutableList<String> = mutableListOf()
         for(categoriaLista in categorias){
             val categoria = categoriaLista.trim().split(" ")
-            nombresCategorias.add(categoria[0])
+            nombresCategorias.add(categoria[posicion]) //0 -> nombre, 1-> urlImagen
         }
-
         return nombresCategorias
-    }
-
-/*    private fun obtenerIconos(): MutableList<Icono> {
-        var iconosCategorias: MutableList<Icono> = mutableListOf()
-        for(categoriaLista in categorias){
-            val categoria = categoriaLista.trim().split(" ")
-            iconosCategorias.add(categoria[0])
-        }
-        return iconosCategorias
-    }*/
-
-    private fun cargarFragment() {
-        //val array: MutableList<String> = preferences.getArray().toMutableList()
-        val fg = FragmentCategorias(categorias)
-        supportFragmentManager.commit {
-            setReorderingAllowed(true)
-            add(R.id.fg_categoria,fg)
-        }
     }
 }

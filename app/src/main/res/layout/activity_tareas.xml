@@ -26,7 +26,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_categorias"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="100dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
@@ -148,13 +148,15 @@
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_marginStart="12dp"
+            android:layout_marginTop="10dp"
             android:backgroundTint="#A6AEBF"
             android:elevation="4dp"
             android:text="Agregar tarea"
             app:circularflow_radiusInDP="64dp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_tareas_por_hacer"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/tv_tareas_por_hacer" />
+            app:layout_constraintStart_toEndOf="@+id/tv_tareas_por_hacer"
+            app:layout_constraintTop_toBottomOf="@+id/tv_categoria" />
 
         <Button
             android:id="@+id/btn_cerrar_sesion"
@@ -195,6 +197,19 @@
             android:layout_marginBottom="10dp"
             app:layout_constraintBottom_toBottomOf="@+id/btn_cerrar_sesion"
             app:layout_constraintStart_toStartOf="@+id/separator3" />
+
+        <TextView
+            android:id="@+id/tv_categoria"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Aún no hay ninguna categoría"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/separator2" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -45,7 +45,7 @@ class FragmentPagina(
                 val busqueda = query.toString().lowercase().trim()
                 if (android.util.Patterns.WEB_URL.matcher(busqueda).matches()) {
                     webView?.loadUrl(busqueda)
-                    enviarPaginaActivityExtra(busqueda)
+
                     return true
                 }
                 val url = "https://www.google.es/search?q=${busqueda}"
@@ -73,6 +73,9 @@ class FragmentPagina(
 
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
+                if(url?.isNotEmpty() == true){
+                    enviarPaginaActivityExtra(url)
+                }
                 swipe?.isRefreshing = false
             }
         }
