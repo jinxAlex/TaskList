@@ -11,6 +11,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.tasklist.adapters.IconosAdapter
 import com.example.tasklist.fragment.FragmentCategorias
 import com.example.tasklist.adapters.TareasAdapter
 import com.example.tasklist.databinding.ActivityTareasBinding
@@ -45,6 +46,8 @@ class TareasActivity : AppCompatActivity() {
 
     private var listaTareasHechas = Crud().readTareas(true)
 
+    private lateinit var adapterCategorias: IconosAdapter
+
     private val adapterTareasPorHacer = TareasAdapter(listaTareasPorHacer,{ actualizarEstado(it) }, {borrarTarea(it)}, {actualizarTarea(it)})
 
     private val adapterTareasHechas = TareasAdapter(listaTareasHechas, { actualizarEstado(it) }, { borrarTarea(it) },{actualizarTarea(it)})
@@ -63,9 +66,9 @@ class TareasActivity : AppCompatActivity() {
         }
         auth = Firebase.auth
         preferences = Preferences(this)
-        categorias = preferences.getArray().toMutableList()
+
         binding.tvEmailIniciadoSesion.setText(auth.currentUser?.email)
-        cargarFragment()
+        categorias = preferences.getArray().toMutableList()
         setListeners()
         setRecyclers()
     }
@@ -116,12 +119,16 @@ class TareasActivity : AppCompatActivity() {
     private fun setRecyclers() {
         val layout1 = LinearLayoutManager(this)
         val layout2 = LinearLayoutManager(this)
+        val layout3 = LinearLayoutManager(this)
         actualizarTablas()
         binding.recyclerTareasPorHacer.adapter = TareasAdapter(listaTareasPorHacer,{actualizarEstado(it)}, {borrarTarea(it)}, {actualizarTarea(it)})
         binding.recyclerTareasPorHacer.layoutManager = layout1
 
         binding.recyclerTareasHechas.adapter = TareasAdapter(listaTareasHechas,{actualizarEstado(it)}, {borrarTarea(it)}, {actualizarTarea(it)})
         binding.recyclerTareasHechas.layoutManager = layout2
+
+        //binding.recyclerCategorias.adapter = IconosAdapter(obtenerIconos())
+        binding.recyclerCategorias.layoutManager = layout3
     }
 
     override fun onRestart() {
@@ -139,6 +146,8 @@ class TareasActivity : AppCompatActivity() {
                 }
                 i.putExtras(bundle)
                 startActivity(i)
+            }else{
+                Toast.makeText(this,"Debes de añadir una categoría primero",Toast.LENGTH_SHORT).show()
             }
         }
         binding.btnCerrarSesion.setOnClickListener{
@@ -152,7 +161,6 @@ class TareasActivity : AppCompatActivity() {
     }
 
     private fun obtenerCategorias(): MutableList<String> {
-        Log.d("DATOS",categorias.toString())
         var nombresCategorias: MutableList<String> = mutableListOf()
         for(categoriaLista in categorias){
             val categoria = categoriaLista.trim().split(" ")
@@ -161,6 +169,15 @@ class TareasActivity : AppCompatActivity() {
 
         return nombresCategorias
     }
+
+/*    private fun obtenerIconos(): MutableList<Icono> {
+        var iconosCategorias: MutableList<Icono> = mutableListOf()
+        for(categoriaLista in categorias){
+            val categoria = categoriaLista.trim().split(" ")
+            iconosCategorias.add(categoria[0])
+        }
+        return iconosCategorias
+    }*/
 
     private fun cargarFragment() {
         //val array: MutableList<String> = preferences.getArray().toMutableList()

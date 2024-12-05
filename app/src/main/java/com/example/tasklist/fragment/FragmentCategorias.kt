@@ -42,7 +42,7 @@ class FragmentCategorias(
             val url = categoria.trim().split(" ")
 
             val boton = ImageButton(contexto)
-
+            boton.setBackgroundColor(Color.parseColor("#BFECFF"))
             Picasso.get().load(url[1]).resize(100,100).into(boton)
             layoutManager.addView(boton)
         }

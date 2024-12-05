@@ -23,6 +23,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_cerrar_sesion" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_categorias"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_cerrar_sesion" />
+
         <View
             android:id="@+id/separator2"
             android:layout_width="match_parent"
@@ -45,7 +56,7 @@
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="10dp"
             android:background="?android:attr/listDivider"
-            app:layout_constraintBottom_toTopOf="@+id/fg_categoria"
+            app:layout_constraintBottom_toTopOf="@+id/recycler_categorias"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent" />
@@ -137,7 +148,7 @@
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_marginStart="12dp"
-            android:backgroundTint="#C5CAE9"
+            android:backgroundTint="#A6AEBF"
             android:elevation="4dp"
             android:text="Agregar tarea"
             app:circularflow_radiusInDP="64dp"
@@ -149,7 +160,7 @@
             android:id="@+id/btn_cerrar_sesion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="#fcb7af"
+            android:backgroundTint="#FFD2A0"
             android:text="@string/main_btn_cerrar_sesion"
             app:layout_constraintEnd_toEndOf="@+id/separator3"
             app:layout_constraintTop_toTopOf="parent" />
@@ -159,10 +170,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:backgroundTint="#ffca99"
+            android:backgroundTint="#605EA1"
             android:text="@string/main_btn_add_categoria"
-            app:layout_constraintStart_toStartOf="@+id/fg_categoria"
-            app:layout_constraintTop_toBottomOf="@+id/fg_categoria" />
+            app:layout_constraintStart_toStartOf="@+id/recycler_categorias"
+            app:layout_constraintTop_toBottomOf="@+id/recycler_categorias" />
 
         <Button
             android:id="@+id/btn_borrar_categoria"
@@ -170,19 +181,21 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
-            android:backgroundTint="#FEC8D8"
+            android:backgroundTint="#EFB6C8"
             android:text="@string/main_btn_borrar_categoria"
-            app:layout_constraintEnd_toEndOf="@+id/fg_categoria"
+            app:layout_constraintEnd_toEndOf="@+id/recycler_categorias"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/btn_add_categoria"
-            app:layout_constraintTop_toBottomOf="@+id/fg_categoria" />
+            app:layout_constraintTop_toBottomOf="@+id/recycler_categorias" />
 
         <TextView
             android:id="@+id/tv_email_iniciado_sesion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             app:layout_constraintBottom_toBottomOf="@+id/btn_cerrar_sesion"
             app:layout_constraintStart_toStartOf="@+id/separator3" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
