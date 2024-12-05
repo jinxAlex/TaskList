@@ -2,7 +2,6 @@ package com.example.tasklist
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
-import com.example.tasklist.models.Categoria
 
 class Preferences(c: Context) {
 

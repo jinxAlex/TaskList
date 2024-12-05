@@ -102,12 +102,10 @@ class AddCategoria : AppCompatActivity() {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
                 val iconos = ApiIcono.api.getIconos(getString(R.string.icon_api_key),busqueda, 20)
-
                 val lista = iconos.body()?.listaIconos ?: mutableListOf()
                 withContext(Dispatchers.Main) {
                     if (lista.isNotEmpty()) {
                         adapter.lista = lista
-                        Log.d("LISTA",lista.toString())
                         adapter.notifyDataSetChanged()
                     } else {
                         Toast.makeText(this@AddCategoria, "No se encontraron iconos", Toast.LENGTH_SHORT).show()

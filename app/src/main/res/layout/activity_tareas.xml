@@ -15,7 +15,7 @@
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fg_categoria"
             android:layout_width="0dp"
-            android:layout_height="100dp"
+            android:layout_height="50dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
@@ -32,10 +32,10 @@
             android:background="?android:attr/listDivider"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_add_categoria"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.007" />
 
         <View
             android:id="@+id/separator3"
@@ -66,7 +66,7 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/iv"
             android:layout_width="0dp"
-            android:layout_height="400dp"
+            android:layout_height="500dp"
             android:layout_marginEnd="20dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp"
@@ -89,7 +89,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="30dp"
             android:text="@string/main_tv_tareas_hechas"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -110,22 +110,20 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.55" />
+            app:layout_constraintVertical_bias="0.6" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView2"
             android:layout_width="0dp"
-            android:layout_height="400dp"
+            android:layout_height="500dp"
             android:layout_marginEnd="20dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp"
             app:cardUseCompatPadding="true"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/tv_tareas_hechas"
-            app:layout_constraintTop_toBottomOf="@+id/tv_tareas_hechas"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintTop_toBottomOf="@+id/tv_tareas_hechas">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_tareas_hechas"
@@ -153,10 +151,8 @@
             android:layout_height="wrap_content"
             android:backgroundTint="#fcb7af"
             android:text="@string/main_btn_cerrar_sesion"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/separator3"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/btn_add_categoria"
@@ -168,11 +164,24 @@
             app:layout_constraintStart_toStartOf="@+id/fg_categoria"
             app:layout_constraintTop_toBottomOf="@+id/fg_categoria" />
 
+        <Button
+            android:id="@+id/btn_borrar_categoria"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="#FEC8D8"
+            android:text="@string/main_btn_borrar_categoria"
+            app:layout_constraintEnd_toEndOf="@+id/fg_categoria"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/btn_add_categoria"
+            app:layout_constraintTop_toBottomOf="@+id/fg_categoria" />
+
         <TextView
             android:id="@+id/tv_email_iniciado_sesion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/separator3"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_cerrar_sesion"
             app:layout_constraintStart_toStartOf="@+id/separator3" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

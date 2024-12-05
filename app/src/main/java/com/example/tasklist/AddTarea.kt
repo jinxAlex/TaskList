@@ -17,18 +17,17 @@ import com.example.tasklist.providers.db.Crud
 
 class AddTarea : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
 
-    val responseLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+    private val responseLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
         when(it.resultCode){
             RESULT_OK ->{
                 when(binding.radioGroup.checkedRadioButtonId){
                     R.id.rb_pagina -> {
                         val dato = it.data?.getStringExtra("URL").toString()
-                        Log.d("URL MAIN",dato)
-                        binding.tvExtras.setText(dato)
+                        ponerExtras(String.format("Página añadida: %s", dato))
                     }
                     R.id.rb_mapa -> {
                         val dato = it.data?.getStringExtra("COORDENADAS").toString()
-                        binding.tvExtras.setText(dato)
+                        ponerExtras(String.format("Localización: %s", dato))
                     }
                 }
             }
@@ -42,7 +41,13 @@ class AddTarea : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
 
     private lateinit var binding: ActivityAddTareaBinding
 
+    private var pagina: String = ""
+
+    private var localizacion: String = ""
+
     private lateinit var categorias: ArrayList<String>
+
+    private lateinit var tareaEditar: Tarea
 
     private var id= -1
 
@@ -65,12 +70,26 @@ class AddTarea : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
 
     private fun recogerDatos() {
         val datos = intent.extras
+        editable = datos?.getBoolean("EDITABLE")?: false
         categorias= datos?.getStringArrayList("CATEGORIAS")?: arrayListOf()
+        if(editable) {
+            tareaEditar = datos?.getSerializable("TAREA") as Tarea
+        }
     }
 
     private fun ponerDatos() {
-        Log.d("DATOS",categorias.toString())
         binding.spCategoria.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item,categorias)
+        if(editable){
+            binding.etNombre.setText(tareaEditar.nombre)
+            binding.etDescripcion.setText(tareaEditar.descripcion)
+            binding.sbTiempo.progress = tareaEditar.tiempo
+            id = tareaEditar.id
+            if(tareaEditar.localizacion.isEmpty()){
+                binding.rbPagina.isChecked = true
+            }else{
+
+            }
+        }
         ponerMinutos()
     }
 
@@ -126,6 +145,10 @@ class AddTarea : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
         }else{
             Toast.makeText(this,"ERROR: El nombre no puede estar duplicado", Toast.LENGTH_LONG)
         }
+    }
+
+    private fun ponerExtras(string: String){
+        binding.tvExtras.setText(string)
     }
 
     private fun ponerMinutos() {

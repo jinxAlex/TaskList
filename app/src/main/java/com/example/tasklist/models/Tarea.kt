@@ -1,5 +1,7 @@
 package com.example.tasklist.models
 
+import java.io.Serializable
+
 data class Tarea(
     val id: Int,
     val nombre: String,
@@ -10,5 +12,4 @@ data class Tarea(
     val localizacion: String,
     val pagina: String,
     val prioridad: Boolean
-) {
-}
+): Serializable

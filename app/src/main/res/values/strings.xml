@@ -2,6 +2,7 @@
     <string name="app_name">TaskList</string>
     <string name="main_btn_cerrar_sesion">Cerrar sesión</string>
     <string name="main_btn_add_categoria">Agregar categoría</string>
+    <string name="main_btn_borrar_categoria">Borrar categoría</string>
     <string name="main_tv_tareas_hechas">Tareas ya terminadas</string>
     <string name="main_btn_agregar">Agregar tarea</string>
     <string name="main_tv_tareas_por_hacer">Tareas no terminadas aún</string>
@@ -15,6 +16,7 @@
     <string name="add_tarea_tv_descripcion">Descripción:</string>
     <string name="add_tarea_et_descripcion">Introduce aquí la descripción de la tarea</string>
     <string name="add_tarea_tv_titulo"> Añadir tarea</string>
+    <string name="add_tarea_tv_extras">Aún no se han agregado extras</string>
     <string name="login_activity_tv_email">Email: </string>
     <string name="login_activity_tv_pass">Contraseña: </string>
     <string name="login_activity_btn_registrar">Registrarme </string>

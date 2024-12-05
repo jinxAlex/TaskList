@@ -3,7 +3,9 @@ package com.example.tasklist
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -19,6 +21,17 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 
 class TareasActivity : AppCompatActivity() {
+
+    private val responseLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+        when(it.resultCode){
+            RESULT_OK -> {
+
+            }
+            RESULT_CANCELED ->{
+
+            }
+        }
+    }
 
     private lateinit var auth: FirebaseAuth
 
@@ -68,9 +81,15 @@ class TareasActivity : AppCompatActivity() {
     }
 
     private fun actualizarEstado(tarea: Tarea) {
-        tarea.finalizado = when(tarea.finalizado ){
-            true -> false
-            false -> true
+        when(tarea.finalizado ){
+            true -> {
+                tarea.finalizado = false
+                Toast.makeText(this,String.format("La tarea %s se ha movido a la lista de no terminadas.", tarea.nombre),Toast.LENGTH_SHORT).show()
+            }
+            false -> {
+                tarea.finalizado = true
+                Toast.makeText(this,String.format("Se ha completado la tarea %s.", tarea.nombre),Toast.LENGTH_SHORT).show()
+            }
         }
         if (Crud().update(tarea)) {
             onRestart()
@@ -84,7 +103,13 @@ class TareasActivity : AppCompatActivity() {
     }
 
     private fun actualizarTarea(tarea: Tarea) {
-
+        val bundle = Bundle().apply {
+            putBoolean("EDITABLE",true)
+            putSerializable("TAREA",tarea)
+        }
+        val i = Intent(this,AddTarea::class.java)
+        i.putExtras(bundle)
+        responseLauncher.launch(i)
     }
 
 
@@ -106,24 +131,23 @@ class TareasActivity : AppCompatActivity() {
 
     private fun setListeners() {
         binding.btnAdd.setOnClickListener {
-            val i = Intent(this, AddTarea::class.java)
-            startActivity(i)
-        }
-        binding.btnCerrarSesion.setOnClickListener{
-            auth.signOut()
-            finish()
-        }
-        binding.btnAddCategoria.setOnClickListener {
             val nombreCategorias = obtenerCategorias()
             if(nombreCategorias.isNotEmpty()){
-                val i = Intent(this, AddCategoria::class.java)
+                val i = Intent(this, AddTarea::class.java)
                 val bundle = Bundle().apply {
                     putStringArrayList("CATEGORIAS",ArrayList(nombreCategorias))
                 }
                 i.putExtras(bundle)
                 startActivity(i)
             }
-
+        }
+        binding.btnCerrarSesion.setOnClickListener{
+            auth.signOut()
+            finish()
+        }
+        binding.btnAddCategoria.setOnClickListener {
+            val i = Intent(this, AddCategoria::class.java)
+            startActivity(i)
         }
     }
 
