@@ -41,15 +41,15 @@ class Crud {
         return filasAfectadas != 0
     }
 
-    fun readTareas(finalizado: Boolean): MutableList<Tarea>{
+    fun readTareas(finalizado: Boolean, categoria: String): MutableList<Tarea>{
         val lista = mutableListOf<Tarea>()
         val con = Aplicacion.llave.readableDatabase
         try{
             val cursor = con.query(
                 Aplicacion.TABLA,
                 arrayOf("id","nombre","descripcion", "tiempo","finalizado","categoria","localizacion","pagina","prioridad"),
-                "finalizado = ?",
-                if(finalizado) arrayOf("1") else arrayOf("0"),
+                "finalizado = ? AND categoria = ?",
+                arrayOf(if (finalizado) "1" else "0", categoria),
                 null,
                 null,
                 "prioridad DESC"

@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -26,15 +25,17 @@ class TareasActivity : AppCompatActivity() {
 
     private var categoriaActual = 0
 
+    private var nombreCategoria = ""
+
     private  lateinit var binding: ActivityTareasBinding
 
     private lateinit var preferences: Preferences
 
     private lateinit var categorias: MutableList<String>
 
-    private var listaTareasPorHacer = Crud().readTareas(false)
+    private var listaTareasPorHacer = Crud().readTareas(false,nombreCategoria)
 
-    private var listaTareasHechas = Crud().readTareas(true)
+    private var listaTareasHechas = Crud().readTareas(true,nombreCategoria)
 
     private val adapterTareasPorHacer = TareasAdapter(listaTareasPorHacer,{ actualizarEstado(it) }, {borrarTarea(it)}, {actualizarTarea(it)})
 
@@ -59,17 +60,17 @@ class TareasActivity : AppCompatActivity() {
         categorias = preferences.getArray().toMutableList()
         setListeners()
         setRecyclers()
+        cambiarCategoria(categoriaActual)
     }
 
     private fun actualizarTablas() {
         listaTareasPorHacer.clear()
-        listaTareasPorHacer.addAll(Crud().readTareas(false))
+        listaTareasPorHacer.addAll(Crud().readTareas(false,nombreCategoria))
         adapterTareasPorHacer.notifyDataSetChanged()
 
         listaTareasHechas.clear()
-        listaTareasHechas.addAll(Crud().readTareas(true))
+        listaTareasHechas.addAll(Crud().readTareas(true,nombreCategoria))
         adapterTareasHechas.notifyDataSetChanged()
-
     }
 
     private fun actualizarEstado(tarea: Tarea) {
@@ -84,26 +85,32 @@ class TareasActivity : AppCompatActivity() {
             }
         }
         if (Crud().update(tarea)) {
-            onRestart()
+            setRecyclers()
         }
     }
 
     private fun borrarTarea(tarea: Tarea) {
         if(Crud().borrar(tarea)){
-            onRestart()
+            setRecyclers()
         }
     }
 
     private fun cambiarCategoria(posicion: Int) {
         categoriaActual = posicion
+
+        if(categorias.isEmpty()){
+            binding.tvCategoria.setText("Aún no hay categorías")
+        }else{
+            nombreCategoria = descomponerCategorias(0)[posicion]
+            binding.tvCategoria.setText(nombreCategoria)
+        }
+        setRecyclers()
     }
 
     private fun borrarCategoria(posicion: Int) {
-        val listaCategoria = preferences.getArray().toMutableList()
-        listaCategoria.removeAt(posicion)
-        preferences.setArray(listaCategoria)
+        categorias.removeAt(posicion)
+        preferences.setArray(categorias)
         setRecyclers()
-        Log.d("CATEGORIAS",preferences.getArray().toString())
     }
 
     private fun actualizarTarea(tarea: Tarea) {
@@ -131,8 +138,11 @@ class TareasActivity : AppCompatActivity() {
         binding.recyclerTareasHechas.adapter = TareasAdapter(listaTareasHechas,{actualizarEstado(it)}, {borrarTarea(it)}, {actualizarTarea(it)})
         binding.recyclerTareasHechas.layoutManager = layout2
 
-        binding.recyclerCategorias.adapter = CategoriasAdapter(descomponerCategorias(1),{cambiarCategoria(it)})
+        val iconosCategorias = descomponerCategorias(1)
+        val adapterCategorias = CategoriasAdapter(iconosCategorias,{cambiarCategoria(it)})
+        binding.recyclerCategorias.adapter = adapterCategorias
         binding.recyclerCategorias.layoutManager = layout3
+        adapterCategorias.notifyDataSetChanged()
     }
 
     override fun onRestart() {
