@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">TaskList</string>
+    <string name="main_tv_categorias">Aún no hay ninguna categoría</string>
     <string name="main_btn_cerrar_sesion">Cerrar sesión</string>
     <string name="main_btn_add_categoria">Agregar categoría</string>
     <string name="main_btn_borrar_categoria">Borrar categoría</string>
@@ -18,8 +19,8 @@
     <string name="add_tarea_tv_titulo">Añadir tarea</string>
     <string name="add_tarea_tv_titulo_editar">Editar tarea</string>
     <string name="add_tarea_btn_editar">Editar tarea</string>
-    <string name="add_tarea_tv_extras_pagina">Página añadida: %s</string>
-    <string name="add_tarea_tv_extras_mapa">Localización: %s</string>
+    <string name="add_tarea_tv_extras_pagina">Página donde realizar la tarea: %s</string>
+    <string name="add_tarea_tv_extras_mapa">Localización donde realizar la tarea: %s</string>
     <string name="add_tarea_tv_extras">Aún no se han agregado extras</string>
     <string name="login_activity_tv_email">Email: </string>
     <string name="login_activity_tv_pass">Contraseña: </string>

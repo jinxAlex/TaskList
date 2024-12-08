@@ -97,7 +97,7 @@ class TareasActivity : AppCompatActivity() {
     private fun cambiarCategoria(posicion: Int) {
         categoriaActual = posicion
         if(categorias.isEmpty()){
-            binding.tvCategoria.setText("Aún no hay categorías")
+            binding.tvCategoria.setText(getString(R.string.main_tv_categorias))
         }else{
             nombreCategoria = descomponerCategorias(0)[posicion]
             binding.tvCategoria.setText(nombreCategoria)
@@ -110,6 +110,7 @@ class TareasActivity : AppCompatActivity() {
         categorias.removeAt(posicion)
         preferences.setArray(categorias)
         setRecyclers()
+        cambiarCategoria(if(posicion > 1) posicion - 1 else 0)
     }
 
     private fun actualizarTarea(tarea: Tarea) {
@@ -180,7 +181,7 @@ class TareasActivity : AppCompatActivity() {
     private fun descomponerCategorias(posicion: Int): MutableList<String> {
         var nombresCategorias: MutableList<String> = mutableListOf()
         for(categoriaLista in categorias){
-            val categoria = categoriaLista.trim().split(" ")
+            val categoria = categoriaLista.trim().split(",")
             nombresCategorias.add(categoria[posicion]) //0 -> nombre, 1-> urlImagen
         }
         return nombresCategorias

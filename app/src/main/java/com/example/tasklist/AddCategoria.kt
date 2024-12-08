@@ -62,7 +62,7 @@ class AddCategoria : AppCompatActivity() {
         binding.btnAgregar.setOnClickListener {
             if(comprobarDatos()){
                 val array: MutableList<String> = preferences.getArray().toMutableList()
-                array.add(String.format("%s %s",binding.etNombreCategoria.text.toString().trim(),urlIcono))
+                array.add(String.format("%s,%s",binding.etNombreCategoria.text.toString().trim(),urlIcono))
                 preferences.setArray(array)
                 val i = Intent(this,TareasActivity::class.java)
                 startActivity(i)
@@ -75,9 +75,17 @@ class AddCategoria : AppCompatActivity() {
 
     private fun comprobarDatos(): Boolean {
         var esCorrecto = true
-        if(binding.tvNombre.text.isEmpty()){
+        if(binding.etNombreCategoria.text.isEmpty()){
             esCorrecto = false
-            Toast.makeText(this,"El nombre introducido no es valido", Toast.LENGTH_SHORT).show()
+            binding.etNombreCategoria.error = "El nombre introducido no es valido"
+        }
+        if(binding.etNombreCategoria.text.length  > 15 ){
+            esCorrecto = false
+            binding.etNombreCategoria.error = "El nombre introducido no puede ser tan largo"
+        }
+        if(binding.etNombreCategoria.text.contains(",") ){
+            esCorrecto = false
+            binding.etNombreCategoria.error = "El nombre introducido no puede contener una ,"
         }
         if(urlIcono.isEmpty()){
             esCorrecto = false
