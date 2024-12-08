@@ -1,6 +1,5 @@
 package com.example.tasklist.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -22,13 +21,6 @@ class IconosAdapter(
 
     override fun onBindViewHolder(holder: IconosViewHolder, position: Int) {
         val icono = lista[position]
-        val url = "${icono.rasterSizes.lastOrNull()?.formats?.firstOrNull()?.previewUrl}?size=large"
-        holder.render(icono,obtenerIcono,url == iconoSeleccionado)
-        Log.d("URL",url)
-        holder.itemView.setOnClickListener {
-            iconoSeleccionado = url
-            Log.d("URL",iconoSeleccionado)
-            notifyItemChanged(position)
-        }
+        holder.render(icono,obtenerIcono)
     }
 }

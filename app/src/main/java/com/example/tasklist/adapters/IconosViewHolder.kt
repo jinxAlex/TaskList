@@ -10,15 +10,14 @@ import com.squareup.picasso.Picasso
 class IconosViewHolder(v: View): RecyclerView.ViewHolder(v) {
     private val binding = IconoLayoutBinding.bind(v)
 
-    fun render(icono: Icono, obtenerIcono:(String) -> Unit,estaSeleccionado: Boolean){
+    fun render(icono: Icono, obtenerIcono: (String) -> Unit){
         val url = "${icono.rasterSizes.lastOrNull()?.formats?.firstOrNull()?.previewUrl}?size=large"
 
         Picasso.get().load(url).resize(150,150).into(binding.iv)
-       if (estaSeleccionado) {
+
+        binding.iv.setOnClickListener {
             binding.iv.setBackgroundColor(Color.parseColor("#ebdbd4"))
             obtenerIcono(url)
-        } else {
-            binding.iv.setBackgroundColor(Color.TRANSPARENT)
         }
     }
 }
