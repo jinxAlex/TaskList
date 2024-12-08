@@ -2,7 +2,6 @@ package com.example.tasklist
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -27,11 +26,11 @@ class TareasActivity : AppCompatActivity() {
 
     private var nombreCategoria = ""
 
+    private lateinit var categorias: MutableList<String>
+
     private  lateinit var binding: ActivityTareasBinding
 
     private lateinit var preferences: Preferences
-
-    private lateinit var categorias: MutableList<String>
 
     private var listaTareasPorHacer = Crud().readTareas(false,nombreCategoria)
 
@@ -97,7 +96,6 @@ class TareasActivity : AppCompatActivity() {
 
     private fun cambiarCategoria(posicion: Int) {
         categoriaActual = posicion
-
         if(categorias.isEmpty()){
             binding.tvCategoria.setText("Aún no hay categorías")
         }else{
@@ -108,6 +106,7 @@ class TareasActivity : AppCompatActivity() {
     }
 
     private fun borrarCategoria(posicion: Int) {
+        Crud().borrarTareasDeCategoria(nombreCategoria)
         categorias.removeAt(posicion)
         preferences.setArray(categorias)
         setRecyclers()

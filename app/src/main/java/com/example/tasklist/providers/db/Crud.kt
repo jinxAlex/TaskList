@@ -27,6 +27,13 @@ class Crud {
         return tareaBorrada != 0
     }
 
+    fun borrarTareasDeCategoria(categoria: String): Boolean{
+        val con = Aplicacion.llave.writableDatabase
+        val tareaBorrada = con.delete(Aplicacion.TABLA,"categoria = ?", arrayOf(categoria))
+        con.close()
+        return tareaBorrada != 0
+    }
+
     fun update(tarea: Tarea):Boolean{
         val con = Aplicacion.llave.writableDatabase
         val tareaValues = tarea.toContentValues()
@@ -75,6 +82,7 @@ class Crud {
         }
         return lista
     }
+
 
     private fun Tarea.toContentValues(): ContentValues{
         return ContentValues().apply {
