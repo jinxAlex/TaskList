@@ -7,7 +7,7 @@ import com.example.tasklist.Aplicacion
 class Database: SQLiteOpenHelper(Aplicacion.appContext, Aplicacion.DB, null, Aplicacion.version) {
 
     private val tabla = "CREATE TABLE ${Aplicacion.TABLA}( ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            "NOMBRE TEXT NOT NULL," +
+            "NOMBRE  TEXT UNIQUE NOT NULL," +
             "DESCRIPCION TEXT NOT NULL," +
             "TIEMPO INT NOT NULL," +
             "FINALIZADO INT NOT NULL," +

@@ -1,6 +1,5 @@
 package com.example.tasklist
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -64,8 +63,8 @@ class AddCategoria : AppCompatActivity() {
                 val array: MutableList<String> = preferences.getArray().toMutableList()
                 array.add(String.format("%s,%s",binding.etNombreCategoria.text.toString().trim(),urlIcono))
                 preferences.setArray(array)
-                val i = Intent(this,TareasActivity::class.java)
-                startActivity(i)
+                setResult(RESULT_OK)
+                finish()
             }
         }
         binding.btnCancelar.setOnClickListener {

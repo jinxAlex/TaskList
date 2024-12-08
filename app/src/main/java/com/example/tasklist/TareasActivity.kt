@@ -2,8 +2,10 @@ package com.example.tasklist
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -20,13 +22,25 @@ import com.google.firebase.auth.auth
 
 class TareasActivity : AppCompatActivity() {
 
+    val responseLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+        when(it.resultCode){
+            RESULT_OK ->{
+                setRecyclers()
+                cambiarCategoria(preferences.getArray().size - 1)
+            }
+            RESULT_CANCELED -> {
+
+            }
+        }
+    }
+
     private lateinit var auth: FirebaseAuth
 
     private var categoriaActual = 0
 
     private var nombreCategoria = ""
 
-    private lateinit var categorias: MutableList<String>
+    private var categorias: MutableList<String> = mutableListOf()
 
     private  lateinit var binding: ActivityTareasBinding
 
@@ -54,9 +68,7 @@ class TareasActivity : AppCompatActivity() {
         }
         auth = Firebase.auth
         preferences = Preferences(this)
-
         binding.tvEmailIniciadoSesion.setText(auth.currentUser?.email)
-        categorias = preferences.getArray().toMutableList()
         setListeners()
         setRecyclers()
         cambiarCategoria(categoriaActual)
@@ -65,6 +77,7 @@ class TareasActivity : AppCompatActivity() {
     private fun actualizarTablas() {
         listaTareasPorHacer.clear()
         listaTareasPorHacer.addAll(Crud().readTareas(false,nombreCategoria))
+        Log.d("NOMBRE",nombreCategoria)
         adapterTareasPorHacer.notifyDataSetChanged()
 
         listaTareasHechas.clear()
@@ -127,6 +140,7 @@ class TareasActivity : AppCompatActivity() {
 
 
     private fun setRecyclers() {
+        categorias = preferences.getArray().toMutableList()
         val layout1 = LinearLayoutManager(this)
         val layout2 = LinearLayoutManager(this)
         val layout3 = LinearLayoutManager(this)
@@ -143,11 +157,6 @@ class TareasActivity : AppCompatActivity() {
         binding.recyclerCategorias.adapter = adapterCategorias
         binding.recyclerCategorias.layoutManager = layout3
         adapterCategorias.notifyDataSetChanged()
-    }
-
-    override fun onRestart() {
-        super.onRestart()
-        setRecyclers()
     }
 
     private fun setListeners() {
@@ -170,7 +179,7 @@ class TareasActivity : AppCompatActivity() {
         }
         binding.btnAddCategoria.setOnClickListener {
             val i = Intent(this, AddCategoria::class.java)
-            startActivity(i)
+            responseLauncher.launch(i)
         }
         binding.btnBorrarCategoria.setOnClickListener {
             borrarCategoria(categoriaActual)

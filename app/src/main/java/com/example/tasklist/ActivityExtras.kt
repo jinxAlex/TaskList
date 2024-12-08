@@ -111,7 +111,6 @@ class ActivityExtras : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun recibirPaginaExtra(pagina: String) {
-        Log.d("URLMETODO",pagina)
         urlPagina = pagina
     }
 

@@ -77,9 +77,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         binding.btnGoogle.setOnClickListener {
-            if (datosCorrectos()){
-                loginGoogle()
-            }
+            loginGoogle()
         }
     }
 
