@@ -77,7 +77,6 @@ class TareasActivity : AppCompatActivity() {
     private fun actualizarTablas() {
         listaTareasPorHacer.clear()
         listaTareasPorHacer.addAll(Crud().readTareas(false,nombreCategoria))
-        Log.d("NOMBRE",nombreCategoria)
         adapterTareasPorHacer.notifyDataSetChanged()
 
         listaTareasHechas.clear()
@@ -105,6 +104,11 @@ class TareasActivity : AppCompatActivity() {
         if(Crud().borrar(tarea)){
             setRecyclers()
         }
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        setRecyclers()
     }
 
     private fun cambiarCategoria(posicion: Int) {

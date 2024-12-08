@@ -85,6 +85,9 @@ class AddTarea : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
             binding.etNombre.setText(tareaEditar.nombre)
             binding.etDescripcion.setText(tareaEditar.descripcion)
             binding.sbTiempo.progress = tareaEditar.tiempo
+            if(tareaEditar.prioridad){
+                binding.cbPrioridad.isChecked = true
+            }
             binding.spCategoria.setSelection(categorias.indexOf(tareaEditar.categoria))
             binding.btnEnviar.text = getString(R.string.add_tarea_btn_editar)
             id = tareaEditar.id
@@ -134,6 +137,7 @@ class AddTarea : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
     private fun irActivityExtra(tipoFragment: Int) {
         val bundle = Bundle().apply {
             putInt("TIPO",tipoFragment)
+            putString("EXTRA",if(tipoFragment== 0) pagina else localizacion)
         }
         val i = Intent(this,ActivityExtras::class.java)
         i.putExtras(bundle)

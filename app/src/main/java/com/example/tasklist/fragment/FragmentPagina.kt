@@ -14,9 +14,9 @@ import android.widget.SearchView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 
 class FragmentPagina(
+    private val url: String,
     private val enviarPaginaActivityExtra:(String) -> Unit
 ) : Fragment() {
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +34,10 @@ class FragmentPagina(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setListeners()
+        if(url.isNotEmpty()){
+            val webView = view?.findViewById<WebView>(R.id.web_view)
+            webView?.loadUrl(url)
+        }
     }
 
     private fun setListeners() {

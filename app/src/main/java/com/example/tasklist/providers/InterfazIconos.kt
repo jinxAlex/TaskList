@@ -9,5 +9,5 @@ import retrofit2.http.Query
 interface InterfazIconos {
     @GET("v4/icons/search")
 
-    suspend fun getIconos(@Header("Authorization") authorization: String, @Query("query") busqueda: String, @Query("count") count: Int = 10): Response<ListaIconos>
+    suspend fun getIconos(@Header("Authorization") authorization: String, @Query("query") busqueda: String, @Query("count") count: Int): Response<ListaIconos>
 }

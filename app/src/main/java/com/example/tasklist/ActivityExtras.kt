@@ -18,9 +18,11 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.commit
 import com.example.tasklist.databinding.ActivityExtrasBinding
 import com.example.tasklist.fragment.FragmentPagina
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 
 class ActivityExtras : AppCompatActivity(), OnMapReadyCallback {
@@ -88,12 +90,20 @@ class ActivityExtras : AppCompatActivity(), OnMapReadyCallback {
     private fun recogerDatos() {
         val datos = intent.extras
         tipoFragment = datos?.getInt("TIPO")?: 0
+        when(tipoFragment){
+            0 -> {
+                urlPagina = datos?.getString("EXTRA").toString()
+            }
+            1 ->{
+                localizacion = datos?.getString("EXTRA").toString()
+            }
+        }
     }
 
     private fun ponerFragment(tipoFragment: Int) {
         when(tipoFragment){
             0 ->{
-                val fg = FragmentPagina({recibirPaginaExtra(it)})
+                val fg = FragmentPagina(urlPagina,{recibirPaginaExtra(it)})
                 supportFragmentManager.commit {
                     setReorderingAllowed(false)
                     replace(R.id.fg_extra,fg)
@@ -115,8 +125,20 @@ class ActivityExtras : AppCompatActivity(), OnMapReadyCallback {
     }
 
     override fun onMapReady(p0: GoogleMap) {
+        Log.d("Localizacion", localizacion)
         map = p0
         map.uiSettings.isZoomControlsEnabled = true
+        if(localizacion.isNotEmpty()){
+            val coordenadas = localizacion.trim().split(" ")
+            val latitud = coordenadas[0].toDoubleOrNull()
+            val longitud = coordenadas[1].toDoubleOrNull()
+
+            if (latitud != null && longitud != null) {
+                val latLng = LatLng(latitud,longitud)
+                map.addMarker(MarkerOptions().position(latLng))
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12f), 4500, null)
+            }
+        }
         map.setOnMapClickListener { latLng ->
             map.clear()
             map.addMarker(MarkerOptions().position(latLng))
